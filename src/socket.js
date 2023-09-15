@@ -1,5 +1,5 @@
 const {Server} = require('socket.io');
-
+const {getFormsByEmail} = require('./services.js')
 let io;
 
 
@@ -19,9 +19,16 @@ function initialSocket(httpServer) {
         console.log(`Disconnected: ${socket.id}`);
       });
 
+
+         // Pongo a escuchar evento "join" para obtener los formularios por email
+     socket.on('join', async (email) => {
+      const forms = await getFormsByEmail(email);
+      socket.emit('forms', forms);
     });
 
+    });
 
+   
 
 
 
