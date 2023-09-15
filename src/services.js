@@ -16,8 +16,16 @@ async function getFormsByEmail(email) {
     }
   }
 
-
+//Crea formulario pendiente con modelo.
+const createForm = async (user, model) => {
+    let form = await Form.create({
+      email: user,
+      model,
+    });
+    return form;
+    
+  };
 
   // exports
 
-  module.exports = {getFormsByEmail}
+  module.exports = {getFormsByEmail,createForm}
