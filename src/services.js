@@ -25,9 +25,26 @@ const createForm = async (user) => {
     
   };
 
-
+// Elimina un formulario pendiente
+const deleteFormPending =  async (id)=>{
+    let value = false;
+     Form.destroy({
+      where: {
+        id
+      }
+    })
+    .then(() => {
+      console.log('Formulario eliminado exitosamente');
+    })
+    .catch(err => {
+      console.error('Error al intentar eliminar el formulario:', err);
+    });
+    
+    
+    
+    }
 
 
   // exports
 
-  module.exports = {getFormsByEmail,createForm}
+  module.exports = {getFormsByEmail,createForm,deleteFormPending}
