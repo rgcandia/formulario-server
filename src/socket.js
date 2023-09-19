@@ -3,7 +3,9 @@ const {
   getFormsByEmail,
   createForm,
   deleteFormPending,
+  updateForm,
 } = require('./services.js')
+const {emailHandler} = require('./emailHandler.js')
 let io;
 
 
@@ -47,12 +49,18 @@ function initialSocket(httpServer) {
 
  })
 
+    //config updateForm
+    socket.on('updateForm',async ({id,form})=>{
+      const email = await updateForm({id,form});
+      const forms = await getFormsByEmail(email)
+      await emailHandler(form);
+      io.emit(email, forms);
+    })
+
+
+
+
     });
-
-     
-
-
-    
 
     return io;
   }

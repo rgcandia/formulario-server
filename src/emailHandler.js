@@ -44,7 +44,7 @@ let message = {
   
    await sendEmail(message);
    await sendEmail(messageDani);
-    console.log(form)
+    
     
 }
 module.exports = {emailHandler};
