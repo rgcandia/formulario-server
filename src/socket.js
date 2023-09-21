@@ -38,15 +38,14 @@ function initialSocket(httpServer) {
   socket.on('createForm', async ({email}) => {
     let form = await createForm(email);
     const forms = await getFormsByEmail(email);
-    io.emit(email, forms);      
+    io.emit(email, {forms,alertCreateForm:true});    
   });
 
   // Escucho evento deleteFormPending
   socket.on('deleteFormPending',async({id,user})=>{
     await deleteFormPending(id);
      const forms = await getFormsByEmail(user)
-     io.emit(user, forms);
-
+     io.emit(user, {forms});   
  })
 
     //config updateForm
@@ -54,7 +53,8 @@ function initialSocket(httpServer) {
       const email = await updateForm({id,form});
       const forms = await getFormsByEmail(email)
       await emailHandler(form);
-      io.emit(email, forms);
+      io.emit(email, {forms});
+     
     })
 
 

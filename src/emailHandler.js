@@ -43,7 +43,7 @@ let message = {
   };
   
    await sendEmail(message);
-   await sendEmail(messageDani);
+  //  await sendEmail(messageDani);
     
     
 }
