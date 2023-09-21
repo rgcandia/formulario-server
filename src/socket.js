@@ -45,7 +45,7 @@ function initialSocket(httpServer) {
   socket.on('deleteFormPending',async({id,user})=>{
     await deleteFormPending(id);
      const forms = await getFormsByEmail(user)
-     io.emit(user, {forms});   
+     io.emit(user, {forms,deleteForm:true});   
  })
 
     //config updateForm
@@ -53,7 +53,7 @@ function initialSocket(httpServer) {
       const email = await updateForm({id,form});
       const forms = await getFormsByEmail(email)
       await emailHandler(form);
-      io.emit(email, {forms});
+      io.emit(email, {forms,updateForm:true});
      
     })
 
