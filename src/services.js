@@ -17,9 +17,10 @@ async function getFormsByEmail(email) {
   }
 
 //Crea formulario 
-const createForm = async (user) => {
+const createForm = async (user,data) => {
     let form = await Form.create({
       email: user,
+      data: data,
     });
     return form;
     

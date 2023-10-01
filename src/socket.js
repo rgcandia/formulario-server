@@ -35,10 +35,11 @@ function initialSocket(httpServer) {
 
 
   // Pongo a escuchar evento "createForm" para crear un formulario para el email pasado por parámetro
-  socket.on('createForm', async ({email}) => {
-    let form = await createForm(email);
+  socket.on('createForm', async ({email,data}) => {
+    let form = await createForm(email,data);
     const forms = await getFormsByEmail(email);
-    io.emit(email, {forms,alertCreateForm:true});    
+    io.emit(email, {forms,updateForm:true});    
+  
   });
 
   // Escucho evento deleteFormPending
