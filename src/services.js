@@ -402,24 +402,41 @@ function RenderObjectProperties(objeto) {
   // }
  let nombre = objeto.home.lugar;
   let seccion = nombre.toLowerCase();
+  // let html = `<div>
+  //    <h3> Sección ${objeto.home.lugar}</h3>
+  //    ${render(objeto[seccion])}
+  //    ${
+  //      objeto[seccion].sobreEscenario &&
+  //      `<div>
+  //        <p ><strong>DATOS SOBRE ESCENARIO</strong></p>
+  //        ${render(objeto[seccion].dataSobreEscenario)}
+  //      </div>`
+  //    }
+  //    ${
+  //      objeto[seccion].bajoEscenario &&
+  //      `<div>
+  //        <p><strong>DATOS BAJO ESCENARIO</strong></p>
+  //        ${render(objeto[seccion].dataBajoEscenario)}
+  //      </div>`
+  //    }
+  // </div>`;
   let html = `<div>
      <h3> Sección ${objeto.home.lugar}</h3>
      ${render(objeto[seccion])}
-     ${
-       objeto[seccion].sobreEscenario &&
-       `<div>
-         <p ><strong>DATOS SOBRE ESCENARIO</strong></p>
+     ${objeto[seccion].sobreEscenario ? `
+       <div>
+         <p><strong>DATOS SOBRE ESCENARIO</strong></p>
          ${render(objeto[seccion].dataSobreEscenario)}
        </div>`
-     }
-     ${
-       objeto[seccion].bajoEscenario &&
-       `<div>
+     : ''}
+     ${objeto[seccion].bajoEscenario ? `
+       <div>
          <p><strong>DATOS BAJO ESCENARIO</strong></p>
          ${render(objeto[seccion].dataBajoEscenario)}
        </div>`
-     }
+     : ''}
   </div>`;
+
   return html;
 }
 
@@ -439,6 +456,19 @@ const formatEmail = (form)=>{
 <head>
     <meta charset="UTF-8">
     <title>Datos del Formulario</title>
+    <style>
+        /* Aquí puedes agregar tus estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
         <h1>Datos del formulario</h1>
