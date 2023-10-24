@@ -23,7 +23,7 @@ const emailContent = `
         <p><span class="strong-text">Lugar: </span>${form.home.lugar} </p></br>
 
     <p>RESTO DEL FORMULARIO DEPENDIENDO DE QUIEN LO RECIBE</p></br></br>
-    <p><span class="strong-text">:</span> </p></br>
+    
 </body>
 </html>
 `;
@@ -31,7 +31,7 @@ const emailContent = `
 let message = {
     from: USER_EMAIL,
     to: "alejandrogcandia@gmail.com",
-    subject: "Formulario Evento",
+    subject: "Formulario de Eventos",
     text: "Has creado un  evento !",
     html:emailContent,
   }; 
@@ -45,7 +45,7 @@ let message = {
   };
   
    await sendEmail(message);
-  //  await sendEmail(messageDani);
+   await sendEmail(messageNico);
     
     
 }
