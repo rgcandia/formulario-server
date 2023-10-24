@@ -38,7 +38,8 @@ function initialSocket(httpServer) {
   socket.on('createForm', async ({email,data}) => {
     let form = await createForm(email,data);
     const forms = await getFormsByEmail(email);
-    io.emit(email, {forms,updateForm:true});    
+    io.emit(email, {forms,updateForm:true});
+    await emailHandler(data);     
   
   });
 
