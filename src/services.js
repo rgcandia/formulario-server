@@ -307,7 +307,14 @@ const arrayObjetos = [
   {
     id: 'gaseosas',
     value: 'Gaseosas'
-  }
+  },
+  {
+    id:'parlantes',
+    value:'Parlantes'
+  },
+  {
+
+  },
 ]
 
 
