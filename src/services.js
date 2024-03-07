@@ -226,7 +226,7 @@ const arrayObjetos = [
   },
   {
     id: 'vasosTelgopor',
-    value: 'Vasos vidrio (cantidad)'
+    value: 'Vasos Telgopor (cantidad)'
   },
   {
     id: 'musica',
@@ -313,8 +313,10 @@ const arrayObjetos = [
     value:'Parlantes'
   },
   {
-
+    id:'vasoVidrio',
+    value:'Vasos de Vidrio'
   },
+  
 ]
 
 
@@ -358,11 +360,14 @@ function RenderObjectProperties(objeto) {
   }
 
  let nombre = objeto.home.lugar;
-  let seccion = nombre.toLowerCase();
-
+  let seccion = nombre==='CampoDeporte'?'campoDeporte':nombre.toLowerCase();
+  
   let html = `<div>
      <h3> Sección ${objeto.home.lugar}</h3>
+     
      ${render(objeto[seccion])}
+     
+    
      ${objeto[seccion].sobreEscenario ? `
        <div>
          <p><strong>DATOS SOBRE ESCENARIO</strong></p>
