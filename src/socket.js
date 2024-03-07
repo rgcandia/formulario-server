@@ -30,6 +30,7 @@ function initialSocket(httpServer) {
      socket.on('join', async (email) => {
       const forms = await getFormsByEmail(email);
       socket.emit('forms', forms);
+
     });
 
 

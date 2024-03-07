@@ -310,36 +310,6 @@ const arrayObjetos = [
   }
 ]
 
-// function convertirStringAFechaHora(stringFecha) {
-//   try {
-//     // Eliminar el carácter 'Z' al final del string
-//     const fechaSinZ = stringFecha.slice(0, -1);
-//     // Crear un objeto Date a partir del string
-//     const fechaHora = new Date(fechaSinZ);
-//     // Crear un nuevo objeto Date con la diferencia del huso horario local
-//     const fechaHoraLocal = new Date(fechaHora.getTime() - fechaHora.getTimezoneOffset() * 60000);
-//     // Devolver la fecha y hora en un formato legible
-//     return fechaHoraLocal.toLocaleString('es-ES', { timeZone: 'UTC' });
-//   } catch (error) {
-//     // En caso de que el string no tenga un formato válido
-//     return "Formato de fecha y hora no válido";
-//   }
-// }
-
-
-//   // Funcion para obtener del objeto lugar las propiedades.
-//  function convertirLugar(lugar){
- 
-//     let result = "";
-//     for(const propiedad in lugar){
-//         if(lugar[propiedad]){
-//             result += ` ${propiedad} `
-            
-//         }
-//     }
-
-//     return result;
-//  } 
 
  function customRender (value){
  
@@ -379,47 +349,10 @@ function RenderObjectProperties(objeto) {
       })
       .join(''); // Usa join para unir los elementos en un solo string, sin comas
   }
-  // function render(objeto) {
-  //   return `<div>${Object.keys(objeto)
-  //     .map((propiedad, index) => {
-  //       if (
-  //         typeof objeto[propiedad] === 'object' ||
-  //         propiedad === 'padres' ||
-  //         propiedad === 'alumnos' ||
-  //         propiedad === 'sobreEscenario' ||
-  //         propiedad === 'bajoEscenario'
-  //       ) {
-  //         return'';
-  //       } else {
-  //         const valor = objeto[propiedad];
-  //         const valorRenderizado =
-  //           typeof valor === 'boolean' ? valor.toString() : valor;
-  //         return valor === false
-  //           ? ''
-  //           : `<p><strong>${customRender(propiedad)} :</strong> &nbsp; ${valorRenderizado}</p>`;
-  //       }
-  //     })}</div>`;
-  // }
+
  let nombre = objeto.home.lugar;
   let seccion = nombre.toLowerCase();
-  // let html = `<div>
-  //    <h3> Sección ${objeto.home.lugar}</h3>
-  //    ${render(objeto[seccion])}
-  //    ${
-  //      objeto[seccion].sobreEscenario &&
-  //      `<div>
-  //        <p ><strong>DATOS SOBRE ESCENARIO</strong></p>
-  //        ${render(objeto[seccion].dataSobreEscenario)}
-  //      </div>`
-  //    }
-  //    ${
-  //      objeto[seccion].bajoEscenario &&
-  //      `<div>
-  //        <p><strong>DATOS BAJO ESCENARIO</strong></p>
-  //        ${render(objeto[seccion].dataBajoEscenario)}
-  //      </div>`
-  //    }
-  // </div>`;
+
   let html = `<div>
      <h3> Sección ${objeto.home.lugar}</h3>
      ${render(objeto[seccion])}
