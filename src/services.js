@@ -714,6 +714,39 @@ const RenderPropertiesTaloba = (objeto)=>{
   return html;
 }
 
+
+// funcion para filtrar por true o false si corresponde a DYC 
+const filterDyc = (form)=>{
+
+  const lugar = form.home.lugar;
+  let seccion = lugar === 'CampoDeporte' ? 'campoDeporte' : lugar.toLowerCase();
+  let result = false;
+
+  //creo un listado con todos los items que tiene que tener dyc 
+  let listado = ['fondoPrensa','podio','observacionesComunicaciones',
+  'fondoEscenario','escudoFondo'];
+
+// recorro el listado y verifico si hay alguno que corresponda y que no sea null
+for (const e of listado) {
+  if ( form[seccion]?.dataBajoEscenario && form[seccion]?.dataBajoEscenario.hasOwnProperty(e) && form[seccion]?.dataBajoEscenario[e] !== false) {
+      result = true; // Actualizamos result a true si se encuentra al menos un elemento que cumpla la condición
+      break; // Salimos del bucle tan pronto como se cumpla la condición
+  }
+  if ( form[seccion]?.dataSobreEscenario &&form[seccion]?.dataSobreEscenario.hasOwnProperty(e) && form[seccion]?.dataSobreEscenario[e] !== false) {
+    result = true; // Actualizamos result a true si se encuentra al menos un elemento que cumpla la condición
+    break; // Salimos del bucle tan pronto como se cumpla la condición
+}
+if (form[seccion]?.hasOwnProperty(e) && form[seccion]?.[e] !== false) {
+  result = true; // Actualizamos result a true si se encuentra al menos un elemento que cumpla la condición
+  break; // Salimos del bucle tan pronto como se cumpla la condición
+}
+
+ 
+}
+
+return result;
+}
+
   // exports
 
   module.exports = {getFormsByEmail,
@@ -722,5 +755,6 @@ const RenderPropertiesTaloba = (objeto)=>{
     updateForm,
     formatEmail,
     filterTaloba,
-    formatTaloba
+    formatTaloba,
+    filterDyc
   }
