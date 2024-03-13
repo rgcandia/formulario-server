@@ -578,6 +578,149 @@ const taloba = [
   },
 
 ]
+
+//funcion para renderizar sólo aquellos que estén dentro de las propiedades especiales, o que no sea false
+function newRender(objeto,propiedadesEspeciales) {
+  
+
+  return Object.keys(objeto)
+    .map((propiedad, index) => {
+      if (
+        typeof objeto[propiedad] === 'object' ||
+        propiedad === 'padres' ||
+        propiedad === 'alumnos' ||
+        propiedad === 'sobreEscenario' ||
+        propiedad === 'bajoEscenario'
+      ) {
+        return ''; // Cambia esto para evitar que se muestren comas
+      } else {
+        const valor = objeto[propiedad];
+        const valorRenderizado =
+          typeof valor === 'boolean' ? valor.toString() : valor;
+
+        if (valor === false || !propiedadesEspeciales.includes(propiedad)) {
+          return ''; // Cambia esto para evitar que se muestren comas
+        } else {
+          return `<p><strong>${customRender(propiedad)} :</strong> &nbsp; ${valorRenderizado}</p>`;
+        }
+      }
+    })
+    .join(''); // Usa join para unir los elementos en un solo string, sin comas
+}
+
+// funcion que devuelve false o true para vefiricar si hay items de taloba en el form
+const filterTaloba = (form) => {
+  const lugar = form.home.lugar;
+  let seccion = lugar === 'CampoDeporte' ? 'campoDeporte' : lugar.toLowerCase();
+  let result = false;
+  const objeto = taloba.find((obj) => {
+      return obj.lugar === lugar;
+  });
+
+  if (objeto) {
+      for (const e of objeto.itemsBajo) {
+          if (form[seccion].dataBajoEscenario.hasOwnProperty(e) && form[seccion].dataBajoEscenario[e] !== false) {
+              result = true; // Actualizamos result a true si se encuentra al menos un elemento que cumpla la condición
+              break; // Salimos del bucle tan pronto como se cumpla la condición
+          }
+      }
+      return result;
+  } else {
+      return result;
+  }
+};
+//funcion que estructura el mail de Taloba
+const formatTaloba = (form)=>{
+  let listado = [];
+
+  taloba.forEach(objeto => {
+    if (objeto.items) {
+      listado.push(...objeto.items);
+    }
+    if (objeto.itemsBajo) {
+      listado.push(...objeto.itemsBajo);
+    }
+    if (objeto.itemsAlto) {
+      listado.push(...objeto.itemsAlto);
+    }
+  });
+  
+  listado = [...new Set(listado)];
+const RenderPropertiesTaloba = (objeto)=>{
+  let nombre = objeto.home.lugar;
+  let seccion = nombre==='CampoDeporte'?'campoDeporte':nombre.toLowerCase();
+  
+  let html = `<div>
+     <h3> Sección ${objeto.home.lugar}</h3>
+     
+     ${newRender(objeto[seccion],listado)}
+     
+    
+     ${objeto[seccion].sobreEscenario ? `
+       <div>
+         <p><strong>DATOS SOBRE ESCENARIO</strong></p>
+         ${newRender(objeto[seccion].dataSobreEscenario,listado)}
+       </div>`
+     : ''}
+     ${objeto[seccion].bajoEscenario ? `
+       <div>
+         <p><strong>DATOS BAJO ESCENARIO</strong></p>
+         ${newRender(objeto[seccion].dataBajoEscenario,listado)}
+       </div>`
+     : ''}
+  </div>`;
+
+  return html;
+}
+
+
+
+  let html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Datos del Formulario</title>
+    <style>
+        /* Aquí puedes agregar tus estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+        <h1>Datos del formulario para Taloba</h1>
+        <p><strong >Email: </strong> ${form.home.email}</p></br>
+        <p><strong >Nombre completo: </strong> ${form.home.nombreCompleto}</p></br>
+        <p><strong >Nombre del Evento: </strong> ${form.home.nombreEvento}</p></br>
+        <p><strong >Sector: ${form.home.sector}</strong></p></br>
+        <p><strong >Fecha: </strong> ${form.home.fecha}</p></br>
+        <p><strong >Hora: </strong> ${form.home.hora}</p></br>
+        <p><strong >Lugar: </strong>${form.home.lugar} </p></br>
+
+        ${     
+          RenderPropertiesTaloba(form)
+        }
+</body>
+</html>
+`
+  return html;
+}
+
   // exports
 
-  module.exports = {getFormsByEmail,createForm,deleteFormPending,updateForm,formatEmail}
+  module.exports = {getFormsByEmail,
+    createForm,
+    deleteFormPending,
+    updateForm,
+    formatEmail,
+    filterTaloba,
+    formatTaloba
+  }

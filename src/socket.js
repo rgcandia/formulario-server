@@ -39,9 +39,11 @@ function initialSocket(httpServer) {
   socket.on('createForm', async ({email,data}) => {
     let form = await createForm(email,data);
     const forms = await getFormsByEmail(email);
-    io.emit(email, {forms,updateForm:true});
-    await emailHandler(data);     
-  
+    io.emit(email, {forms,updateForm:true});  
+    await emailHandler(data);
+
+
+
   });
 
   // Escucho evento deleteFormPending
@@ -55,6 +57,7 @@ function initialSocket(httpServer) {
     socket.on('updateForm',async ({id,form})=>{
       const email = await updateForm({id,form});
       const forms = await getFormsByEmail(email)
+      console.log("Llegó a updateForm")
       await emailHandler(form);
       io.emit(email, {forms,updateForm:true});
      
