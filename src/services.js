@@ -494,11 +494,90 @@ const sGonzalez = [
   {
     lugar:'CampoDeporte',
     items:[
-      
+      'mantelBlanco','mantelAzul','microfonoInalambrico','alargues','zapatillas','parlantes',
+      'computadora','consola','fondoPrensa','podio','musica',
+    ]
+  },
+  {
+    lugar:'Otro',
+    items:[
+      'cantidadPadres','cantidadAlumnos'
+    ],
+    itemsSobre:[
+      'fondoEscenario','escudoFondo','mantelBlanco','mantelAzul','microfonoInalambrico','pieMicrofono','lucesYPulsadores','alargues','proyectorA',
+      'puntero','pantalla','computadora',
+    ],
+    itemsBajo:[
+      'manteles','microfonoInalambrico','alargues','fondoPrensa','computadora','aireAcondicionado','musica',
+    ]
+  },
+  {
+    lugar:'Teatro',
+    items:[
+      'cantidadPadres','cantidadAlumnos',
+    ],
+    itemsSobre:[
+      'fondoEscenario','escudoFondo','mantelBlanco','mantelAzul','microfonoInalambrico','pieMicrofono',
+      'lucesYPulsadores','alargues','proyectorA','puntero','pantalla','computadora',
+    ],
+    itemsBajo:[
+      'manteles','microfonoInalambrico','alargues','proyectorB','fondoPrensa','computadora','aireAcondicionado','musica','video'
+    ]
+  },
+  {
+    lugar:'Tinglado',
+    items:['cantidadPadres','cantidadAlumnos'],
+    itemsSobre:[
+      'fondoEscenario','escudoFondo','mantelBlanco','mantelAzul','microfonoInalambrico','pieMicrofono','alargues'
+    ],
+    itemsBajo:[
+      'manteles','alargues','parlante','consola','fondoPrensa','computadora','musica',
     ]
   }
 ]
 
+const dyc = [
+  {
+    lugar:'CampoDeporte',
+    items:['fondoPrensa','podio','observacionesComunicaciones',],
+  
+  },
+  {
+    lugar:'Otro',
+    items:['cantidadAlumnos','cantidadPadres'],
+    itemsSobre:['fondoEscenario','escudoFondo'],
+    itemsBajo:['fondoPrensa','observacionesComunicaciones']
+  },
+  {
+    lugar:'Teatro',
+    items:['cantidadAlumnos','cantidadPadres'],
+    itemsSobre:['fondoEscenario','escudoFondo'],
+    itemsBajo:['fondoPrensa','observacionesComunicaciones']
+  },
+  {
+    lugar:'Tinglado',
+    items:['cantidadAlumnos','cantidadPadres'],
+    itemsSobre:['fondoEscenario','escudoFondo'],
+    itemsBajo:['fondoPrensa','observacionesComunicaciones'],
+  }
+]
+const taloba = [
+  {
+    lugar:'Otro',
+    items:['cantidadAlumnos','cantidadPadres'],
+    itemsBajo:['cafe','aguaCaliente','te','jarraAguaHielo','gaseosas','azucar',
+  'edulcorante','lecheChocolatada','vasosPlasticos','vasosTelgopor','vasoVidrio',
+  'batidores','servilleta','sandwichesMiga','medialunas','tortas','observacionesCocina',
+  ],
+  },
+  {
+    lugar:'Teatro',
+    items:['cantidadAlumnos','cantidadPadres'],
+    itemsBajo:['cafe','aguaCaliente','te','jarraAguaHielo','azucar','edulcorante','batidores','servilleta',
+  'vasosPlasticos','vasosTelgopor','vasoVidrio','observacionesCocina']
+  },
+
+]
   // exports
 
   module.exports = {getFormsByEmail,createForm,deleteFormPending,updateForm,formatEmail}
