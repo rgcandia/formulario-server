@@ -2,7 +2,8 @@ const {sendEmail} =  require('./emailServices.js')
 const {formatEmail,
   filterTaloba,
   formatTaloba,
-  filterDyc
+  filterDyc,
+  formatDyc
 } =  require('./services.js')
 const emailHandler = async (form)=>{
     require('dotenv').config();
@@ -28,8 +29,19 @@ const emailContent = formatEmail(form);
 //   await sendEmail(message)
 //  }
 
-// Filtrado para DYC
-
- console.log(filterDyc(form))
+// // Filtrado para DYC
+// if(filterDyc(form)){
+//   let htmlDyc = formatDyc(form);
+//   let message = {
+//         from: USER_EMAIL,
+//         to: "alejandrogcandia@gmail.com",
+//         subject: "Formulario de Eventos",
+//         text: "Has creado un  evento !",
+//         html:htmlDyc,
+//       }; 
+//       await sendEmail(message)
+     
+// }
+ 
 }
 module.exports = {emailHandler};

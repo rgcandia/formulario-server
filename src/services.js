@@ -608,6 +608,76 @@ function newRender(objeto,propiedadesEspeciales) {
     .join(''); // Usa join para unir los elementos en un solo string, sin comas
 }
 
+const RenderProperties = (objeto,listado)=>{
+  let nombre = objeto.home.lugar;
+  let seccion = nombre==='CampoDeporte'?'campoDeporte':nombre.toLowerCase();
+  
+  let html = `<div>
+     <h3> Sección ${objeto.home.lugar}</h3>
+     
+     ${newRender(objeto[seccion],listado)}
+     
+    
+     ${objeto[seccion].sobreEscenario ? `
+       <div>
+         <p><strong>DATOS SOBRE ESCENARIO</strong></p>
+         ${newRender(objeto[seccion].dataSobreEscenario,listado)}
+       </div>`
+     : ''}
+     ${objeto[seccion].bajoEscenario ? `
+       <div>
+         <p><strong>DATOS BAJO ESCENARIO</strong></p>
+         ${newRender(objeto[seccion].dataBajoEscenario,listado)}
+       </div>`
+     : ''}
+  </div>`;
+
+  return html;
+}
+
+const getHtml = (funcion,form,listado,name)=>{
+  let html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Datos del Formulario</title>
+    <style>
+        /* Aquí puedes agregar tus estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+        <h1>Datos del formulario para  ${name}</h1>
+        <p><strong >Email: </strong> ${form.home.email}</p></br>
+        <p><strong >Nombre completo: </strong> ${form.home.nombreCompleto}</p></br>
+        <p><strong >Nombre del Evento: </strong> ${form.home.nombreEvento}</p></br>
+        <p><strong >Sector: ${form.home.sector}</strong></p></br>
+        <p><strong >Fecha: </strong> ${form.home.fecha}</p></br>
+        <p><strong >Hora: </strong> ${form.home.hora}</p></br>
+        <p><strong >Lugar: </strong>${form.home.lugar} </p></br>
+
+        ${     
+          funcion(form,listado)
+        }
+</body>
+</html>
+`
+  return html;
+}
+
+
+///////////////////////////////////////////////
+
 // funcion que devuelve false o true para vefiricar si hay items de taloba en el form
 const filterTaloba = (form) => {
   const lugar = form.home.lugar;
@@ -747,6 +817,31 @@ if (form[seccion]?.hasOwnProperty(e) && form[seccion]?.[e] !== false) {
 return result;
 }
 
+// funcion para estructurar mail de DYC
+const formatDyc = (form)=>{
+  let listado = [];
+
+  dyc.forEach(objeto => {
+    if (objeto.items) {
+      listado.push(...objeto.items);
+    }
+    if (objeto.itemsBajo) {
+      listado.push(...objeto.itemsBajo);
+    }
+    if (objeto.itemsAlto) {
+      listado.push(...objeto.itemsAlto);
+    }
+  });
+  
+  listado = [...new Set(listado)];
+
+
+  return getHtml(RenderProperties,form,listado,"DYC")
+
+
+}
+
+
   // exports
 
   module.exports = {getFormsByEmail,
@@ -756,5 +851,6 @@ return result;
     formatEmail,
     filterTaloba,
     formatTaloba,
-    filterDyc
+    filterDyc,
+    formatDyc
   }
