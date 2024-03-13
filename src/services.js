@@ -359,7 +359,7 @@ function RenderObjectProperties(objeto) {
       .join(''); // Usa join para unir los elementos en un solo string, sin comas
   }
 
- let nombre = objeto.home.lugar;
+  let nombre = objeto.home.lugar;
   let seccion = nombre==='CampoDeporte'?'campoDeporte':nombre.toLowerCase();
   
   let html = `<div>
@@ -433,6 +433,71 @@ const formatEmail = (form)=>{
 `
   return html;
 }
+
+
+const redirectEmail = (form,user)=>{
+
+
+
+
+
+}
+// Se realiza los arrays para filtrar por mail cada item.
+
+const smaspons = [
+  {lugar:'CampoDeporte',
+   items:['mesasR','sillas','sombrillas','observacionesDisposicionMesas',
+   'mesaLarga','alargues','zapatillas','parlantes','consola','fondoPrensa','podio',
+   'observacionesCompras','observacionesMantenimiento'
+  ]
+},
+{
+  lugar:'Otro',
+  items:[
+    'lugarEvento','limpiezaInicio','limpiezaFinal',,'cantidadPadres','cantidadAlumnos'
+  ],
+  itemsSobre:[
+    'fondoEscenario','mesas','pupitres','sillas','gradas',
+    'lucesYPulsadores','alargues',
+  ],
+  itemsBajo:[
+    'pupitres','sillas','gradas','tarimas','alargues',
+    'fondoPrensa','aireAcondicionado','gaseosas','lecheChocolatada',
+    'sandwichesMiga','medialunas','tortas','observacionesCompras',
+    'observacionesMantenimiento'
+  ]
+},
+{
+  lugar:'Tinglado',
+  items:['limpiezaInicio','limpiezaFinal','cantidadPadres','cantidadAlumnos'],
+  itemsSobre:['fondoEscenario','mesas','pupitres','sillas','gradas','alargues',
+'pieMicrofono', 
+],
+  itemsBajo:[
+    'pupitres','sillas','observacionesSillas','gradas','tarimas','alargues',
+    'escaleras','parlante','consola','fondoPrensa','observacionesCompras','observacionesMantenimiento'
+  ]
+},
+{
+  lugar:'Teatro',
+  items:['limpiezaInicio','limpiezaFinal','cantidadPadres','cantidadAlumnos'],
+  itemsSobre:['fondoEscenario','mesas','pupitres','sillas','gradas','lucesYPulsadores',
+'alargues','proyectorA',
+],
+  itemsBajo:['pupitres','sillas','observacionesSillas','gradas','tarimas','escaleras',
+'alargues','proyectorB','fondoPrensa','observacionesCompras','observacionesMantenimiento'
+],
+}
+]
+
+const sGonzalez = [
+  {
+    lugar:'CampoDeporte',
+    items:[
+      
+    ]
+  }
+]
 
   // exports
 
