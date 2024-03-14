@@ -11,13 +11,13 @@ const {formatEmail,
 const emailHandler = async (form)=>{
     require('dotenv').config();
     const  EMAIL_DANI = "duderzo@wellspring.com.ar";
-    // const {USER_EMAIL} = process.env;
+    const {USER_EMAIL} = process.env;
     
  // Contenido HTML del correo
 const emailContent = formatEmail(form);
 let messageFull = {
-  from: EMAIL_DANI,
-  to: "alejandrogcandia@gmail.com",
+  from: USER_EMAIL,
+  to: EMAIL_DANI,
   subject: "Formulario de Eventos",
   text: "Has creado un  evento !",
   html:emailContent,
@@ -29,8 +29,8 @@ await sendEmail(messageFull)
 if(filterMail(form,smaspons)){
   let htmlSmaspons = formatMail(form,smaspons,"MANTENIMIENTO")
   let message = {
-            from: EMAIL_DANI,
-            to: "alejandrogcandia@gmail.com",
+            from: USER_EMAIL,
+            to: EMAIL_DANI,
             subject: "Formulario de Eventos",
             text: "Has creado un  evento !",
             html:htmlSmaspons,
@@ -41,8 +41,8 @@ if(filterMail(form,smaspons)){
 if(filterMail(form,sGonzalez)){
   let htmlSgonzalez = formatMail(form,sGonzalez,"Silvina Gonzalez")
   let message = {
-    from: EMAIL_DANI,
-    to: "alejandrogcandia@gmail.com",
+    from: USER_EMAIL,
+    to: EMAIL_DANI,
     subject: "Formulario de Eventos",
     text: "Has creado un  evento !",
     html:htmlSgonzalez,
@@ -53,8 +53,8 @@ if(filterMail(form,sGonzalez)){
 if(filterMail(form,taloba)){
   let htmlTaloba = formatMail(form,taloba,"TALOBA SRL")
   let message = {
-    from: EMAIL_DANI,
-    to: "alejandrogcandia@gmail.com",
+    from: USER_EMAIL,
+    to: EMAIL_DANI,
     subject: "Formulario de Eventos",
     text: "Has creado un  evento !",
     html:htmlTaloba,
@@ -65,8 +65,8 @@ if(filterMail(form,taloba)){
 if(filterMail(form,dyc)){
   let htmldyc = formatMail(form,dyc,"DISEÑO y COMUNICACIÓN")
   let message = {
-    from: EMAIL_DANI,
-    to: "alejandrogcandia@gmail.com",
+    from: USER_EMAIL,
+    to: EMAIL_DANI,
     subject: "Formulario de Eventos",
     text: "Has creado un  evento !",
     html:htmldyc,
