@@ -678,126 +678,34 @@ const getHtml = (funcion,form,listado,name)=>{
 
 ///////////////////////////////////////////////
 
-// funcion que devuelve false o true para vefiricar si hay items de taloba en el form
-const filterTaloba = (form) => {
-  const lugar = form.home.lugar;
-  let seccion = lugar === 'CampoDeporte' ? 'campoDeporte' : lugar.toLowerCase();
-  let result = false;
-  const objeto = taloba.find((obj) => {
-      return obj.lugar === lugar;
-  });
-
-  if (objeto) {
-      for (const e of objeto.itemsBajo) {
-          if (form[seccion].dataBajoEscenario.hasOwnProperty(e) && form[seccion].dataBajoEscenario[e] !== false) {
-              result = true; // Actualizamos result a true si se encuentra al menos un elemento que cumpla la condición
-              break; // Salimos del bucle tan pronto como se cumpla la condición
-          }
-      }
-      return result;
-  } else {
-      return result;
-  }
-};
-//funcion que estructura el mail de Taloba
-const formatTaloba = (form)=>{
-  let listado = [];
-
-  taloba.forEach(objeto => {
-    if (objeto.items) {
-      listado.push(...objeto.items);
-    }
-    if (objeto.itemsBajo) {
-      listado.push(...objeto.itemsBajo);
-    }
-    if (objeto.itemsAlto) {
-      listado.push(...objeto.itemsAlto);
-    }
-  });
-  
-  listado = [...new Set(listado)];
-const RenderPropertiesTaloba = (objeto)=>{
-  let nombre = objeto.home.lugar;
-  let seccion = nombre==='CampoDeporte'?'campoDeporte':nombre.toLowerCase();
-  
-  let html = `<div>
-     <h3> Sección ${objeto.home.lugar}</h3>
-     
-     ${newRender(objeto[seccion],listado)}
-     
-    
-     ${objeto[seccion].sobreEscenario ? `
-       <div>
-         <p><strong>DATOS SOBRE ESCENARIO</strong></p>
-         ${newRender(objeto[seccion].dataSobreEscenario,listado)}
-       </div>`
-     : ''}
-     ${objeto[seccion].bajoEscenario ? `
-       <div>
-         <p><strong>DATOS BAJO ESCENARIO</strong></p>
-         ${newRender(objeto[seccion].dataBajoEscenario,listado)}
-       </div>`
-     : ''}
-  </div>`;
-
-  return html;
-}
 
 
 
-  let html = `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Datos del Formulario</title>
-    <style>
-        /* Aquí puedes agregar tus estilos CSS */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-        <h1>Datos del formulario para Taloba</h1>
-        <p><strong >Email: </strong> ${form.home.email}</p></br>
-        <p><strong >Nombre completo: </strong> ${form.home.nombreCompleto}</p></br>
-        <p><strong >Nombre del Evento: </strong> ${form.home.nombreEvento}</p></br>
-        <p><strong >Sector: ${form.home.sector}</strong></p></br>
-        <p><strong >Fecha: </strong> ${form.home.fecha}</p></br>
-        <p><strong >Hora: </strong> ${form.home.hora}</p></br>
-        <p><strong >Lugar: </strong>${form.home.lugar} </p></br>
 
-        ${     
-          RenderPropertiesTaloba(form)
-        }
-</body>
-</html>
-`
-  return html;
-}
-
-
-// funcion para filtrar por true o false si corresponde a DYC 
-const filterDyc = (form)=>{
-
+// Se realiza un filtro generico.
+const filterMail = (form,listado)=>{
   const lugar = form.home.lugar;
   let seccion = lugar === 'CampoDeporte' ? 'campoDeporte' : lugar.toLowerCase();
   let result = false;
 
-  //creo un listado con todos los items que tiene que tener dyc 
-  let listado = ['fondoPrensa','podio','observacionesComunicaciones',
-  'fondoEscenario','escudoFondo'];
+// filtro el listado para que me dé solo lo que encesito.
+const elementosUnicos = [];
+
+listado.forEach(objeto => {
+    const propiedades = ['items', 'itemsSobre', 'itemsBajo'];
+    propiedades.forEach(propiedad => {
+        if (objeto[propiedad]) {
+            objeto[propiedad].forEach(item => {
+                if (item !== 'cantidadPadres' && item !== 'cantidadAlumnos' && !elementosUnicos.includes(item)) {
+                    elementosUnicos.push(item);
+                }
+            });
+        }
+    });
+});
 
 // recorro el listado y verifico si hay alguno que corresponda y que no sea null
-for (const e of listado) {
+for (const e of elementosUnicos) {
   if ( form[seccion]?.dataBajoEscenario && form[seccion]?.dataBajoEscenario.hasOwnProperty(e) && form[seccion]?.dataBajoEscenario[e] !== false) {
       result = true; // Actualizamos result a true si se encuentra al menos un elemento que cumpla la condición
       break; // Salimos del bucle tan pronto como se cumpla la condición
@@ -817,30 +725,30 @@ if (form[seccion]?.hasOwnProperty(e) && form[seccion]?.[e] !== false) {
 return result;
 }
 
-// funcion para estructurar mail de DYC
-const formatDyc = (form)=>{
+// se realiza un format genérico
+
+const formatMail = (form,obj,texto)=>{
   let listado = [];
 
-  dyc.forEach(objeto => {
+  obj.forEach(objeto => {
     if (objeto.items) {
       listado.push(...objeto.items);
     }
     if (objeto.itemsBajo) {
       listado.push(...objeto.itemsBajo);
     }
-    if (objeto.itemsAlto) {
-      listado.push(...objeto.itemsAlto);
+    if (objeto.itemsSobre) {
+      listado.push(...objeto.itemsSobre);
     }
   });
   
   listado = [...new Set(listado)];
 
 
-  return getHtml(RenderProperties,form,listado,"DYC")
+  return getHtml(RenderProperties,form,listado,texto)
 
 
 }
-
 
   // exports
 
@@ -849,8 +757,10 @@ const formatDyc = (form)=>{
     deleteFormPending,
     updateForm,
     formatEmail,
-    filterTaloba,
-    formatTaloba,
-    filterDyc,
-    formatDyc
+    filterMail,
+    formatMail,
+    smaspons,
+    dyc,
+    taloba,
+    sGonzalez,
   }
