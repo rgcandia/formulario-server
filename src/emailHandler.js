@@ -11,7 +11,7 @@ const {formatEmail,
 const emailHandler = async (form)=>{
     require('dotenv').config();
     const  EMAIL_DANI = "duderzo@wellspring.com.ar";
-    const {USER_EMAIL} = process.env;
+    // const {USER_EMAIL} = process.env;
     
  // Contenido HTML del correo
 const emailContent = formatEmail(form);
