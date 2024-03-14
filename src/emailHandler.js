@@ -10,14 +10,13 @@ const {formatEmail,
 } =  require('./services.js')
 const emailHandler = async (form)=>{
     require('dotenv').config();
-    const  USER_EMAIL = "danielauderzo@hotmail.com";
-   
-    // const {USER_EMAIL} = process.env;
+    const  EMAIL_DANI = "duderzo@wellspring.com.ar";
+    const {USER_EMAIL} = process.env;
     
  // Contenido HTML del correo
 const emailContent = formatEmail(form);
 let messageFull = {
-  from: USER_EMAIL,
+  from: EMAIL_DANI,
   to: "alejandrogcandia@gmail.com",
   subject: "Formulario de Eventos",
   text: "Has creado un  evento !",
@@ -30,7 +29,7 @@ await sendEmail(messageFull)
 if(filterMail(form,smaspons)){
   let htmlSmaspons = formatMail(form,smaspons,"MANTENIMIENTO")
   let message = {
-            from: USER_EMAIL,
+            from: EMAIL_DANI,
             to: "alejandrogcandia@gmail.com",
             subject: "Formulario de Eventos",
             text: "Has creado un  evento !",
@@ -42,7 +41,7 @@ if(filterMail(form,smaspons)){
 if(filterMail(form,sGonzalez)){
   let htmlSgonzalez = formatMail(form,sGonzalez,"Silvina Gonzalez")
   let message = {
-    from: USER_EMAIL,
+    from: EMAIL_DANI,
     to: "alejandrogcandia@gmail.com",
     subject: "Formulario de Eventos",
     text: "Has creado un  evento !",
@@ -54,7 +53,7 @@ if(filterMail(form,sGonzalez)){
 if(filterMail(form,taloba)){
   let htmlTaloba = formatMail(form,taloba,"TALOBA SRL")
   let message = {
-    from: USER_EMAIL,
+    from: EMAIL_DANI,
     to: "alejandrogcandia@gmail.com",
     subject: "Formulario de Eventos",
     text: "Has creado un  evento !",
@@ -66,7 +65,7 @@ if(filterMail(form,taloba)){
 if(filterMail(form,dyc)){
   let htmldyc = formatMail(form,dyc,"DISEÑO y COMUNICACIÓN")
   let message = {
-    from: USER_EMAIL,
+    from: EMAIL_DANI,
     to: "alejandrogcandia@gmail.com",
     subject: "Formulario de Eventos",
     text: "Has creado un  evento !",
