@@ -586,6 +586,7 @@ function newRender(objeto,propiedadesEspeciales) {
   return Object.keys(objeto)
     .map((propiedad, index) => {
       if (
+
         typeof objeto[propiedad] === 'object' ||
         propiedad === 'padres' ||
         propiedad === 'alumnos' ||
@@ -618,13 +619,13 @@ const RenderProperties = (objeto,listado)=>{
      ${newRender(objeto[seccion],listado)}
      
     
-     ${objeto[seccion].sobreEscenario ? `
+     ${objeto[seccion].sobreEscenario&&tieneObjetos(listado,objeto[seccion].dataSobreEscenario) ? `
        <div>
          <p><strong>DATOS SOBRE ESCENARIO</strong></p>
          ${newRender(objeto[seccion].dataSobreEscenario,listado)}
        </div>`
      : ''}
-     ${objeto[seccion].bajoEscenario ? `
+     ${objeto[seccion].bajoEscenario &&tieneObjetos(listado,objeto[seccion].dataSobreEscenario)? `
        <div>
          <p><strong>DATOS BAJO ESCENARIO</strong></p>
          ${newRender(objeto[seccion].dataBajoEscenario,listado)}
@@ -678,8 +679,27 @@ const getHtml = (funcion,form,listado,name)=>{
 
 ///////////////////////////////////////////////
 
+//Funcion para evitar que aparezca BajoEscenario y SobreEscenario en caso de no ser necesario.
+function tieneObjetos(array, comparar) {
+  let eliminar = ['limpiezaInicio', 'limpiezaFinal', 'cantidadPadres', 'cantidadAlumnos'];
+  let listado = [];
 
+  // Recorrer el array recibido por parámetro
+  array.forEach(elemento => {
+    if (!eliminar.includes(elemento)) {
+      listado.push(elemento); // Agregar elemento a 'listado' si no está en 'eliminar'
+    }
+  });
 
+  return Object.keys(comparar).map((propiedad, index) => {
+    const valor = comparar[propiedad];
+
+    if (valor === true || listado.includes(propiedad)) {
+      return true;
+    } 
+  });
+  return false;
+}
 
 
 // Se realiza un filtro generico.
