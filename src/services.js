@@ -442,7 +442,7 @@ const redirectEmail = (form,user)=>{
 
 
 }
-// Se realiza los arrays para filtrar por mail cada item.
+// Se realiza los arrays con los items que tiene que ver cada sector.
 
 const smaspons = [
   {lugar:'CampoDeporte',

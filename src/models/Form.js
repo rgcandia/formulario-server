@@ -6,27 +6,32 @@ module.exports=(sequelize)=>{
             primaryKey:true,
             autoIncrement:true,
         },
-        name:{
+        sector:{
             type:DataTypes.STRING,
         },
-        description:{
+        nameEvento:{
             type:DataTypes.STRING,
-        },
+        },     
+        nameUser:{
+            type:DataTypes.STRING,
+        },   
         email:{
             type:DataTypes.STRING,
-
         },
-        
+        fecha:{
+            type:DataTypes.DATE,
+        },
+        horaInicio:{
+            type:DataTypes.DATE,
+        },
+        horaFinal:{
+            type:DataTypes.DATE,
+        },  
         data:{
             type:DataTypes.JSON,           
         },
-        model:{
-            type:DataTypes.INTEGER,
-        },
-        pending:{
-            type:DataTypes.BOOLEAN,
-            defaultValue:true,
-        }
-
+        estado:{
+            type:DataTypes.STRING,
+        },      
     });
 }
