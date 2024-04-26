@@ -4,6 +4,7 @@ const {
   createForm,
   deleteFormPending,
   updateForm,
+  createUser
 } = require('./services.js')
 const {emailHandler} = require('./emailHandler.js')
 let io;
@@ -37,7 +38,7 @@ function initialSocket(httpServer) {
 
   // Pongo a escuchar evento "createForm" para crear un formulario para el email pasado por parámetro
   socket.on('createForm', async ({email,data}) => {
-    let form = await createForm(email,data);
+    const  form = await createForm(email,data);
     const forms = await getFormsByEmail(email);
     io.emit(email, {forms,updateForm:true});  
     await emailHandler(data);
@@ -65,6 +66,7 @@ function initialSocket(httpServer) {
 
  // crear usuarios
   socket.on('createUser', async ({email,name})=>{
+    let user =  await createUser(email,name);
 
 
 

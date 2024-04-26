@@ -9,7 +9,7 @@ module.exports=(sequelize)=>{
         email:{
             type:DataTypes.STRING,
         },
-        nombre:{
+        name:{
             type:DataTypes.STRING,
        }
     });

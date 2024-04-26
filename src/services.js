@@ -1,4 +1,4 @@
-const { Form} = require('./db.js');
+const { Form , User} = require('./db.js');
 
 
 //  devolver Forms
@@ -25,6 +25,31 @@ const createForm = async (user,data) => {
     return form;
     
   };
+ // obtiene  los datos del usuario correspondiente
+ const getUser = async (email)=>{
+  try {
+    const user = await Form.findAll({
+      where: {
+        email: email,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.error('Error al buscar el usuario', error);
+    
+  }
+ } 
+
+ // se obtiene todos los usuarios
+ const getAllUser = async ()=>{
+  try {
+    const users = await Form.findAll();
+    return users;
+  } catch (error) {
+    console.error('Error al buscar el usuario', error);
+    
+  }
+ }
 
 // Elimina un formulario pendiente
 const deleteFormPending =  async (id)=>{
@@ -73,7 +98,15 @@ const deleteFormPending =  async (id)=>{
   }
 };
 
-
+// Crear Usuarios
+const createUser = async (email,name) => {
+  let form = await User.create({
+    email,
+    name,
+  });
+  return form;
+  
+};
 
 
 
@@ -779,6 +812,7 @@ const formatMail = (form,obj,texto)=>{
     formatEmail,
     filterMail,
     formatMail,
+    createUser,
     smaspons,
     dyc,
     taloba,
