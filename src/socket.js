@@ -64,7 +64,11 @@ function initialSocket(httpServer) {
     })
 
  // crear usuarios
+  socket.on('createUser', async ({email,name})=>{
 
+
+
+  });
 
     });
 
