@@ -58,7 +58,6 @@ function initialSocket(httpServer) {
     socket.on('updateForm',async ({id,form})=>{
       const email = await updateForm({id,form});
       const forms = await getFormsByEmail(email)
-      console.log("Llegó a updateForm")
       await emailHandler(form);
       io.emit(email, {forms,updateForm:true});
      
@@ -66,10 +65,10 @@ function initialSocket(httpServer) {
 
  // crear usuarios
   socket.on('createUser', async ({email,name})=>{
-    let user =  await createUser(email,name);
-
-
-
+    const userCreado =  await createUser(email,name);
+    // enviar  a los admin la lista de usuarios 
+    // y 
+    
   });
 
     });

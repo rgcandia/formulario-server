@@ -18,6 +18,9 @@
             - nombre
             - email
             - algún dato extra   
+            - el usuario se crea desde el front , contactando con Firebase donde se guarda solo usuario y contraseña
+            - resto de los datos se guardan en una base de datos.
+
 3.  Flujo de datos
     - Al solicitar la creación de un evento se debe :
         - verificar que la fecha sea correcta (respecto a tiempo y hora)
