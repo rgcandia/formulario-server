@@ -11,8 +11,14 @@
     - horaInicio  
     - horaFinal  (considerar dejar un espacio de tiempo para la limpieza)
     - data (formulario completo)
-
-2.  Flujo de datos
+    - estado (aprobado - desaprobado - pendiente)
+2. Creación de usuarios
+    - Implementar con firebase (Auth)
+        - Creación de usuarios :
+            - nombre
+            - email
+            - algún dato extra   
+3.  Flujo de datos
     - Al solicitar la creación de un evento se debe :
         - verificar que la fecha sea correcta (respecto a tiempo y hora)
         - verificar que esa fecha esté disponible  (ej :que sea dia de semana)
