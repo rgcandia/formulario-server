@@ -29,3 +29,7 @@
         - verificar que en la fecha y hora requerida no haya otro evento , siempre recordando que se está trabajando con el sector correspondiente.
         -  crear el evento, pero con el estádo pendiente. (Eso significa que todavía el administrador no aprobó el pedido de evento.)
         - 
+
+
+
+        prueba de  pus

@@ -1,6 +1,63 @@
 const { Form , User} = require('./db.js');
 
 
+
+
+//  INICIO DE SESIÓN 
+    // Obtener datos del usuario  que inició sesión
+    // un usuario siempre tiene que tener un nombre y un correo
+
+
+ // obtiene  los datos del usuario correspondiente
+ const getUser = async (email)=>{
+  try {
+    const user = await User.findAll({
+      where: {
+        email: email,
+      },
+    });
+    
+    return user;
+  } catch (error) {
+    console.error('Error al buscar el usuario', error);
+    
+  }
+ } 
+
+
+//Crea formulario  pendiente
+const createForm = async (user,data) => {
+  let form = await Form.create({
+  sector: data.home.sector,
+  nameEvento : data.home.nombreEvento,
+  nameUser: user.name,
+  email: user.email,
+
+  data: data,
+  estado : "PENDIENTE"
+  });
+  return form;
+  
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //  devolver Forms
 async function getFormsByEmail(email) {
     try {
@@ -16,29 +73,8 @@ async function getFormsByEmail(email) {
     }
   }
 
-//Crea formulario 
-const createForm = async (user,data) => {
-    let form = await Form.create({
-      email: user,
-      data: data,
-    });
-    return form;
-    
-  };
- // obtiene  los datos del usuario correspondiente
- const getUser = async (email)=>{
-  try {
-    const user = await Form.findAll({
-      where: {
-        email: email,
-      },
-    });
-    return user;
-  } catch (error) {
-    console.error('Error al buscar el usuario', error);
-    
-  }
- } 
+
+
 
  // se obtiene todos los usuarios
  const getAllUser = async ()=>{
@@ -805,7 +841,9 @@ const formatMail = (form,obj,texto)=>{
 
   // exports
 
-  module.exports = {getFormsByEmail,
+  module.exports = {
+    getUser,
+    getFormsByEmail,
     createForm,
     deleteFormPending,
     updateForm,
