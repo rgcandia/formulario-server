@@ -11,7 +11,8 @@ const {
 // const {authorize,listCalendars} = require('./apiCalendar.js');
 const {emailHandler} = require('./emailHandler.js')
 let io;
-
+// importo funciones de calendar
+const {listarCalendarios,crearCalendario,compartirCalendario,eliminarCalendario} = require('./api_google/api.js');
 
 // Función para inicializar el SOCKET con el httpServer pasado por parámetro.
 function initialSocket(httpServer) {
@@ -64,8 +65,25 @@ function initialSocket(httpServer) {
 
 
      socket.on('apiCalendar',async ()=>{
+      let response;
+      try {
+        // se obtiene la lista de calendarios
+        let listaCalendarios = await listarCalendarios()
+        
+        if(listaCalendarios.length){
+//elimino todos los calendarios en caso de que haya
+listaCalendarios.forEach(async (element,index)=>{
+        console.log("Calendarios actuales:")
+        console.log('* '+(element.summary))
+        console.log('   - ID: '+element.id)
+        console.log(" ")
+})
+        }
       
-      
+        
+      } catch (error) {
+        console.log(error)
+      }
 
      }) 
 
