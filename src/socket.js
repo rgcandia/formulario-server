@@ -65,7 +65,7 @@ function initialSocket(httpServer) {
 
 
      socket.on('apiCalendar',async ()=>{
-      let response;
+      
       try {
         // se obtiene la lista de calendarios
         let listaCalendarios = await listarCalendarios()
@@ -87,6 +87,10 @@ listaCalendarios.forEach(async (element,index)=>{
       } catch (error) {
         console.log(error)
       }
+
+     
+
+
 
      }) 
 
