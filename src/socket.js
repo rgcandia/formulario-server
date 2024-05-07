@@ -69,8 +69,11 @@ function initialSocket(httpServer) {
       try {
         // se obtiene la lista de calendarios
         let listaCalendarios = await listarCalendarios()
-        
+        // se emite un evento con la informacion de los calendarios
+        socket.emit("API",{calendarios:listaCalendarios})
         if(listaCalendarios.length){
+          
+          
 //elimino todos los calendarios en caso de que haya
 listaCalendarios.forEach(async (element,index)=>{
         console.log("Calendarios actuales:")
