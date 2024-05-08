@@ -38,11 +38,15 @@ function initialSocket(httpServer) {
         const user = await getUser(email);
         // obtener los formularios del usuario
         const forms = await getFormsByEmail(email);
-
+      // obtener la lista de calendarios
+        const listaCalendarios = await listarCalendarios()
+    
     // mandar los datos a eventos de socket
+  
         user.length===0?console.log("no hay usuario"): socket.emit(email,{dataUser:user[0].dataValues})
         socket.emit(email,{dataForms:forms})
-         // 
+          // se emite un evento con la informacion de los calendarios
+        socket.emit("API",{calendarios:listaCalendarios})
 
     });
 
@@ -71,17 +75,7 @@ function initialSocket(httpServer) {
         let listaCalendarios = await listarCalendarios()
         // se emite un evento con la informacion de los calendarios
         socket.emit("API",{calendarios:listaCalendarios})
-        if(listaCalendarios.length){
-          
-          
-//elimino todos los calendarios en caso de que haya
-listaCalendarios.forEach(async (element,index)=>{
-        console.log("Calendarios actuales:")
-        console.log('* '+(element.summary))
-        console.log('   - ID: '+element.id)
-        console.log(" ")
-})
-        }
+    
       
         
       } catch (error) {

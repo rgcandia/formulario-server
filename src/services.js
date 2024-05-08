@@ -34,7 +34,7 @@ const createForm = async (user,data) => {
   email: user.email,
 
   data: data,
-  estado : "PENDIENTE"
+  estado : "Pendiente"
   });
   return form;
   
