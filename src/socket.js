@@ -75,7 +75,7 @@ function initialSocket(httpServer) {
         if(compartir){
        
          const seCompartio = await compartirCalendario(compartir.id,compartir.email,'reader')
-          
+         socket.emit('Alerts',{compartido:seCompartio}) 
         }
        if(getCalendar){
  // se obtiene la lista de calendarios
@@ -89,6 +89,17 @@ function initialSocket(httpServer) {
       }
 
      }) 
+
+
+
+
+
+
+
+
+
+
+
 
 
 //   // Pongo a escuchar evento "createForm" para crear un formulario para el email pasado por parámetro

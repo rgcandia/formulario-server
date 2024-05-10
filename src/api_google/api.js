@@ -69,7 +69,9 @@ async function compartirCalendario(idCalendario, correoElectronico, permisos) {
       });
       console.log(`Calendario compartido con ${correoElectronico} con éxito.`);
       console.log(`ID del permiso: ${res.data.id}`);
+      return true;
   } catch (error) {
+      return false;
       console.error('Error al compartir el calendario:', error.message);
   }
 }
