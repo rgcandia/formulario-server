@@ -68,23 +68,25 @@ function initialSocket(httpServer) {
     })
 
 
-     socket.on('apiCalendar',async ()=>{
+     socket.on('apiCalendar',async ({compartir,getCalendar})=>{
       
       try {
-        // se obtiene la lista de calendarios
-        let listaCalendarios = await listarCalendarios()
-        // se emite un evento con la informacion de los calendarios
-        socket.emit("API",{calendarios:listaCalendarios})
-    
-      
-        
+        // Compartir calendario
+        if(compartir){
+       
+         const seCompartio = await compartirCalendario(compartir.id,compartir.email,'reader')
+          
+        }
+       if(getCalendar){
+ // se obtiene la lista de calendarios
+ let listaCalendarios = await listarCalendarios()
+ // se emite un evento con la informacion de los calendarios
+ socket.emit("API",{calendarios:listaCalendarios})
+
+       }
       } catch (error) {
         console.log(error)
       }
-
-     
-
-
 
      }) 
 
