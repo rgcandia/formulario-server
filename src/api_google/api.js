@@ -37,8 +37,6 @@ async function listarCalendarios() {
     }
   }
 
-
-
   async function crearCalendario(nombre) {
     try {
         const nuevoCalendario = await calendar.calendars.insert({
@@ -87,9 +85,34 @@ async function eliminarCalendario(idCalendario) {
     }
 }
 
+async function obtenerEventosCalendario(idCalendario) {
+  try {
+    const response = await calendar.events.list({
+      calendarId: idCalendario,
+      timeMin: (new Date()).toISOString(), // Obtener eventos a partir de ahora
+      maxResults: null, // Sin límite de resultados
+      singleEvents: true,
+      orderBy: 'startTime',
+    });
+
+    const eventos = response.data.items;
+    if (eventos.length) {
+      // Retornar los eventos obtenidos
+      return eventos;
+    } else {
+      console.log('No se encontraron eventos en este calendario.');
+      return false;
+    }
+  } catch (error) {
+    console.error('Error al obtener eventos del calendario:', error.message);
+    return false;
+  }
+}
+
   module.exports = {
     listarCalendarios,
     crearCalendario,
     compartirCalendario,
-    eliminarCalendario
+    eliminarCalendario,
+    obtenerEventosCalendario
   }

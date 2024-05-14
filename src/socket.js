@@ -12,7 +12,13 @@ const {
 const {emailHandler} = require('./emailHandler.js')
 let io;
 // importo funciones de calendar
-const {listarCalendarios,crearCalendario,compartirCalendario,eliminarCalendario} = require('./api_google/api.js');
+const {
+  listarCalendarios,
+  crearCalendario,
+  compartirCalendario,
+  eliminarCalendario,
+  obtenerEventosCalendario
+} = require('./api_google/api.js');
 
 // Función para inicializar el SOCKET con el httpServer pasado por parámetro.
 function initialSocket(httpServer) {
@@ -81,7 +87,7 @@ function initialSocket(httpServer) {
  // se obtiene la lista de calendarios
  let listaCalendarios = await listarCalendarios()
  // se emite un evento con la informacion de los calendarios
- socket.emit("API",{calendarios:listaCalendarios})
+ socket.emit("apiCalendar",{calendarios:listaCalendarios})
 
        }
       } catch (error) {
@@ -91,51 +97,20 @@ function initialSocket(httpServer) {
      }) 
 
 
+     socket.on('getCalendar',async(data)=>{
+      // recibo la petición para ver el calendario dependiendo del id
+      // Se debe obtener los evento del calendario correspondiente
+      const eventos = obtenerEventosCalendario(data.id);
+      socket.emit('apiCalendar',{listadoEventos:{
+        data:eventos
+      }})
+      
+
+     })
 
 
 
 
-
-
-
-
-
-
-
-//   // Pongo a escuchar evento "createForm" para crear un formulario para el email pasado por parámetro
-//   socket.on('createForm', async ({email,data}) => {
-//     const  form = await createForm(email,data);
-//     const forms = await getFormsByEmail(email);
-//     io.emit(email, {forms,updateForm:true});  
-//     await emailHandler(data);
-
-
-
-//   });
-
-//   // Escucho evento deleteFormPending
-//   socket.on('deleteFormPending',async({id,user})=>{
-//     await deleteFormPending(id);
-//      const forms = await getFormsByEmail(user)
-//      io.emit(user, {forms,deleteForm:true});   
-//  })
-
-//     //config updateForm
-//     socket.on('updateForm',async ({id,form})=>{
-//       const email = await updateForm({id,form});
-//       const forms = await getFormsByEmail(email)
-//       await emailHandler(form);
-//       io.emit(email, {forms,updateForm:true});
-     
-//     })
-
-//  // crear usuarios
-//   socket.on('createUser', async ({email,name})=>{
-//     const userCreado =  await createUser(email,name);
-//     // enviar  a los admin la lista de usuarios 
-//     // y 
-    
-//   });
 
     });
 
