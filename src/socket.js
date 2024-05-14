@@ -52,7 +52,7 @@ function initialSocket(httpServer) {
         user.length===0?console.log("no hay usuario"): socket.emit(email,{dataUser:user[0].dataValues})
         socket.emit(email,{dataForms:forms})
           // se emite un evento con la informacion de los calendarios
-        socket.emit("API",{calendarios:listaCalendarios})
+        socket.emit("apiCalendar",{calendarios:listaCalendarios})
 
     });
 
@@ -79,7 +79,7 @@ function initialSocket(httpServer) {
       try {
         // Compartir calendario
         if(compartir){
-       
+        
          const seCompartio = await compartirCalendario(compartir.id,compartir.email,'reader')
          socket.emit('Alerts',{compartido:seCompartio}) 
         }
@@ -97,10 +97,10 @@ function initialSocket(httpServer) {
      }) 
 
 
-     socket.on('getCalendar',async(data)=>{
+     socket.on('getEvents',async(id)=>{
       // recibo la petición para ver el calendario dependiendo del id
       // Se debe obtener los evento del calendario correspondiente
-      const eventos = obtenerEventosCalendario(data.id);
+      const eventos = obtenerEventosCalendario(id);
       socket.emit('apiCalendar',{listadoEventos:{
         data:eventos
       }})
