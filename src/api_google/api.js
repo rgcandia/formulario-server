@@ -87,27 +87,36 @@ async function eliminarCalendario(idCalendario) {
 
 async function obtenerEventosCalendario(idCalendario) {
   try {
+    // Obtener el año actual
+    const añoActual = new Date().getFullYear();
+    // Definir la fecha de inicio del año y la fecha de fin del año
+    const fechaInicio = new Date(añoActual, 0, 1); // 1 de enero del año
+    const fechaFin = new Date(añoActual, 11, 31, 23, 59, 59); // 31 de diciembre del año, último segundo
+
     const response = await calendar.events.list({
       calendarId: idCalendario,
-      timeMin: (new Date()).toISOString(), // Obtener eventos a partir de ahora
-      maxResults: null, // Sin límite de resultados
+      timeMin: fechaInicio.toISOString(), // Primer día del año en formato ISO
+      timeMax: fechaFin.toISOString(), // Último día del año en formato ISO
+      // maxResults: null, // Sin límite de resultados
       singleEvents: true,
       orderBy: 'startTime',
     });
-
+   
     const eventos = response.data.items;
     if (eventos.length) {
       // Retornar los eventos obtenidos
       return eventos;
     } else {
-      console.log('No se encontraron eventos en este calendario.');
+      console.log('No se encontraron eventos en este calendario para el año', añoActual);
       return false;
     }
   } catch (error) {
     console.error('Error al obtener eventos del calendario:', error.message);
+    console.log(error)
     return false;
   }
 }
+
 
   module.exports = {
     listarCalendarios,
