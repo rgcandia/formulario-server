@@ -72,8 +72,17 @@ async function getFormsByEmail(email) {
       
     }
   }
+// devolver todos los forms
 
-
+async function getForms() {
+  try {
+    const forms = await Form.findAll();
+    return forms;
+  } catch (error) {
+    console.error('Error al buscar los formularios por email:', error);
+    
+  }
+}
 
 
  // se obtiene todos los usuarios
@@ -842,6 +851,7 @@ const formatMail = (form,obj,texto)=>{
   // exports
 
   module.exports = {
+    getForms,
     getUser,
     getFormsByEmail,
     createForm,

@@ -117,11 +117,109 @@ async function obtenerEventosCalendario(idCalendario) {
   }
 }
 
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 
+// Función para obtener eventos en un intervalo de tiempo
+async function obtenerEventosEnIntervalo(idCalendario, timeMin, timeMax) {
+  try {
+    const response = await calendar.events.list({
+      calendarId: idCalendario,
+      timeMin: timeMin.toISOString(),
+      timeMax: timeMax.toISOString(),
+      singleEvents: true,
+      orderBy: 'startTime',
+    });
+
+    return response.data.items;
+  } catch (error) {
+    console.error('Error al obtener eventos del calendario:', error.message);
+    return [];
+  }
+}
+
+// Función para verificar solapamientos
+function haySolapamiento(eventoNuevo, eventosExistentes) {
+  for (const evento of eventosExistentes) {
+    const inicioExistente = new Date(evento.start.dateTime || evento.start.date);
+    const finExistente = new Date(evento.end.dateTime || evento.end.date);
+
+    const inicioNuevo = new Date(eventoNuevo.start.dateTime);
+    const finNuevo = new Date(eventoNuevo.end.dateTime);
+
+    if (inicioNuevo < finExistente && finNuevo > inicioExistente) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Función para crear un nuevo evento si no hay solapamientos
+async function crearTurno(idCalendario, nuevoTurno) {
+  const timeMin = new Date(nuevoTurno.start.dateTime);
+  const timeMax = new Date(nuevoTurno.end.dateTime);
+
+  // Obtener eventos en el intervalo del nuevo turno
+  const eventosExistentes = await obtenerEventosEnIntervalo(idCalendario, timeMin, timeMax);
+
+  // Verificar solapamientos
+  if (haySolapamiento(nuevoTurno, eventosExistentes)) {
+    console.log('Error: El nuevo turno se solapa con un evento existente.');
+    return false;
+  }
+
+  // Crear el nuevo turno si no hay solapamientos
+  try {
+    const response = await calendar.events.insert({
+      calendarId: idCalendario,
+      requestBody: nuevoTurno,
+    });
+    console.log(`Turno creado con éxito. ID del turno: ${response.data.id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al crear el turno:', error.message);
+    return false;
+  }
+}
+
+// // Ejemplo de uso de la función crearTurno
+// const idCalendario = 'tu-id-de-calendario';
+// const nuevoTurno = {
+//   summary: 'Consulta Médica',
+//   description: 'Consulta con el Dr. Perez', 
+//   start: {
+//     dateTime: '2024-06-01T09:00:00-07:00',
+//     timeZone: 'America/Los_Angeles',
+//   },
+//   end: {
+//     dateTime: '2024-06-01T10:00:00-07:00',
+//     timeZone: 'America/Los_Angeles',
+//   },
+//   attendees: [
+//     { email: 'paciente@example.com' },
+//   ],
+//   reminders: {
+//     useDefault: false,
+//     overrides: [
+//       { method: 'email', minutes: 24 * 60 },
+//       { method: 'popup', minutes: 10 },
+//     ],
+//   },
+// };
+
+// crearTurno(idCalendario, nuevoTurno).then((turnoCreado) => {
+//   if (turnoCreado) {
+//     console.log('Turno creado:', turnoCreado);
+//   } else {
+//     console.log('Error al crear el turno.');
+//   }
+// });
   module.exports = {
     listarCalendarios,
     crearCalendario,
     compartirCalendario,
     eliminarCalendario,
-    obtenerEventosCalendario
+    obtenerEventosCalendario,
+    crearTurno
+    
   }

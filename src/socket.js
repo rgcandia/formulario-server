@@ -5,7 +5,8 @@ const {
   createForm,
   deleteFormPending,
   updateForm,
-  createUser
+  createUser,
+  getForms
 } = require('./services.js')
 
 // const {authorize,listCalendars} = require('./apiCalendar.js');
@@ -105,11 +106,19 @@ function initialSocket(httpServer) {
         data:eventos
       }})
       
-
      })
 
 
+// evento para devolver todos los registros de eventos
 
+    socket.on('getRegistros',async()=>{
+  const forms = await getForms();
+  if(forms){
+    socket.emit('apiCalendar',{listadoRegistros:forms})
+  }else{
+    console.log("no hay formularios")
+  }
+});
 
 
     });
