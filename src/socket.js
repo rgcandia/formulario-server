@@ -120,6 +120,15 @@ function initialSocket(httpServer) {
   }
 });
 
+// evento para confirmar el evento
+socket.on('confirmEvent',(data)=>{
+// de data obtengo id del calendario
+// el time Min y time Max
+
+
+
+});
+
 
     });
 

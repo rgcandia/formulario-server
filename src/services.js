@@ -24,6 +24,12 @@ const { Form , User} = require('./db.js');
   }
  } 
 
+//formatea la fecha
+function combineDateAndTime(dateString, timeString) {
+  const [year, month, day] = dateString.split('-').map(Number);
+  const [hours, minutes] = timeString.split(':').map(Number);
+  return new Date(year, month - 1, day, hours, minutes);
+}
 
 //Crea formulario  pendiente
 const createForm = async (user,data) => {
@@ -32,14 +38,15 @@ const createForm = async (user,data) => {
   nameEvento : data.home.nombreEvento,
   nameUser: user.name,
   email: user.email,
-
+  fecha: new Date(data.home.fecha),
+  horaInicio:combineDateAndTime(data.home.fecha,data.home.horaInicio),
+  horaFinal:combineDateAndTime(data.home.fecha,data.home.horaFinal), 
   data: data,
   estado : "PENDIENTE"
   });
   return form;
   
 };
-
 
 
 
