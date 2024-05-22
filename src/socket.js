@@ -6,7 +6,8 @@ const {
   deleteFormPending,
   updateForm,
   createUser,
-  getForms
+  getForms,
+  formatoNuevoTurno
 } = require('./services.js')
 
 // const {authorize,listCalendars} = require('./apiCalendar.js');
@@ -102,7 +103,8 @@ function initialSocket(httpServer) {
      socket.on('getEvents',async(id)=>{
       // recibo la petición para ver el calendario dependiendo del id
       // Se debe obtener los evento del calendario correspondiente
-      const eventos = obtenerEventosCalendario(id);
+      const eventos = await obtenerEventosCalendario(id);
+      console.log(eventos)
       socket.emit('apiCalendar',{listadoEventos:{
         data:eventos
       }})
@@ -129,9 +131,10 @@ socket.on('confirmEvent', async (form) => {
     
     // Buscamos el calendario con el summary que coincida con form.data.lugar
     const idCalendario = calendarios.find((el) => el.summary === form.data.home.lugar).id;
-    
+    const  nuevoEvento = formatoNuevoTurno(form);
+
     if (idCalendario) {
-     const data = await crearTurno(idCalendario);
+     const data = await crearTurno(idCalendario,nuevoEvento);
       
 
     } else {

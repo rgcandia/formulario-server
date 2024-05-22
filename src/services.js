@@ -50,28 +50,18 @@ const createForm = async (user,data) => {
 
 const formatoNuevoTurno = (form)=>{
   const nuevoTurno = {
-    summary: 'Reunión de equipo',
-    location: 'Oficina central',
-    description: 'Reunión para discutir el progreso del proyecto',
+    summary: form.nameEvento,
+    location: form.sector,
+    
     start: {
-      dateTime: '2024-05-22T10:00:00-07:00',
-      timeZone: 'America/Los_Angeles',
+      dateTime: form.horaInicio,
+      
     },
     end: {
-      dateTime: '2024-05-22T11:00:00-07:00',
-      timeZone: 'America/Los_Angeles',
+      dateTime: form.horaFinal,
+     
     },
-    attendees: [
-      { email: 'example1@example.com' },
-      { email: 'example2@example.com' },
-    ],
-    reminders: {
-      useDefault: false,
-      overrides: [
-        { method: 'email', minutes: 24 * 60 },
-        { method: 'popup', minutes: 10 },
-      ],
-    },
+
   };
   
   return nuevoTurno;
@@ -886,6 +876,7 @@ const formatMail = (form,obj,texto)=>{
   // exports
 
   module.exports = {
+    formatoNuevoTurno,
     getForms,
     getUser,
     getFormsByEmail,
