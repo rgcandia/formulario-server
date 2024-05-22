@@ -18,7 +18,8 @@ const {
   crearCalendario,
   compartirCalendario,
   eliminarCalendario,
-  obtenerEventosCalendario
+  obtenerEventosCalendario,
+  crearTurno
 } = require('./api_google/api.js');
 
 // Función para inicializar el SOCKET con el httpServer pasado por parámetro.
@@ -121,13 +122,26 @@ function initialSocket(httpServer) {
 });
 
 // evento para confirmar el evento
-socket.on('confirmEvent',(data)=>{
-// de data obtengo id del calendario
-// el time Min y time Max
+socket.on('confirmEvent', async (form) => {
+  try {
+    // Obtenemos la lista de calendarios
+    const calendarios = await listarCalendarios();
+    
+    // Buscamos el calendario con el summary que coincida con form.data.lugar
+    const idCalendario = calendarios.find((el) => el.summary === form.data.home.lugar).id;
+    
+    if (idCalendario) {
+     const data = await crearTurno(idCalendario);
+      
 
-
-
+    } else {
+      console.error("No se encontró un calendario con el lugar especificado:", form.data.lugar);
+    }
+  } catch (error) {
+    console.error("Error al listar los calendarios:", error);
+  }
 });
+
 
 
     });

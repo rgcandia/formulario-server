@@ -38,7 +38,7 @@ const createForm = async (user,data) => {
   nameEvento : data.home.nombreEvento,
   nameUser: user.name,
   email: user.email,
-  fecha: new Date(data.home.fecha),
+  fecha: combineDateAndTime(data.home.fecha,data.home.horaInicio),
   horaInicio:combineDateAndTime(data.home.fecha,data.home.horaInicio),
   horaFinal:combineDateAndTime(data.home.fecha,data.home.horaFinal), 
   data: data,
@@ -48,7 +48,35 @@ const createForm = async (user,data) => {
   
 };
 
+const formatoNuevoTurno = (form)=>{
+  const nuevoTurno = {
+    summary: 'Reunión de equipo',
+    location: 'Oficina central',
+    description: 'Reunión para discutir el progreso del proyecto',
+    start: {
+      dateTime: '2024-05-22T10:00:00-07:00',
+      timeZone: 'America/Los_Angeles',
+    },
+    end: {
+      dateTime: '2024-05-22T11:00:00-07:00',
+      timeZone: 'America/Los_Angeles',
+    },
+    attendees: [
+      { email: 'example1@example.com' },
+      { email: 'example2@example.com' },
+    ],
+    reminders: {
+      useDefault: false,
+      overrides: [
+        { method: 'email', minutes: 24 * 60 },
+        { method: 'popup', minutes: 10 },
+      ],
+    },
+  };
+  
+  return nuevoTurno;
 
+}
 
 
 
