@@ -3,7 +3,7 @@ const {
   getUser,
   getFormsByEmail,
   createForm,
-  deleteFormPending,
+  deleteForm,
   updateForm,
   createUser,
   getForms,
@@ -130,7 +130,22 @@ function initialSocket(httpServer) {
 socket.on('eliminarEventos',async (id)=>{
   const seElimino = await eliminarTodosLosEventos(id);
   if(seElimino){
-console.log("se manda nuevamente los datos a donde correspondan")
+   // eventos
+    const forms = await getForms();
+    // calendarios
+    const calendarios =  await listarCalendarios();
+    const calendario = calendarios.find(e=>e.id===id).summary;
+    const nombreCalendario = calendario==="Campo de Deporte"?"CampoDeporte":calendario;
+    
+            // Filtrar y eliminar los formularios que coinciden con el lugar del calendario
+            const formsAEliminar = forms.filter(form => form.data.home.lugar === nombreCalendario);
+
+            for (const form of formsAEliminar) {
+                deleteForm(form.id);
+            }
+
+            console.log(`Se eliminaron ${formsAEliminar.length} formularios del lugar "${nombreCalendario}".`);
+        
 
   }else{
 console.log("no se pudo eliminar por alguna razón")

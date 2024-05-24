@@ -122,8 +122,8 @@ async function getForms() {
  }
 
 // Elimina un formulario pendiente
-const deleteFormPending =  async (id)=>{
-    let value = false;
+const deleteForm =  async (id)=>{
+    
      Form.destroy({
       where: {
         id
@@ -909,7 +909,7 @@ async function confirmarEstadoForm(id) {
     getUser,
     getFormsByEmail,
     createForm,
-    deleteFormPending,
+    deleteForm,
     updateForm,
     formatEmail,
     filterMail,
