@@ -74,8 +74,9 @@ function initialSocket(httpServer) {
        // obtengo todos los fosm de un mail especifico
        const forms = await getFormsByEmail(user.email);
       // mando evento de form al usuario
-      forms.length===0?socket.emit(user.email,{dataForms:forms}):socket.emit(user.email,{dataForms:forms[0].dataValues})
-       // mando alerta de que se creó correctamente el form
+      // forms.length===0?io.emit(user.email,{dataForms:forms}):io.emit(user.email,{dataForms:forms[0].dataValues})
+      io.emit(user.email,{dataForms:forms}) 
+      // mando alerta de que se creó correctamente el form
        socket.emit(user.email,{alertCreateForm:true})
     })
 
