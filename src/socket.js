@@ -153,12 +153,12 @@ socket.on('eliminarEventos',async (id)=>{
       const emailsUnicos = Array.from(emailsSet);
      
        const newForms = await getForms();
-       socket.emit('apiCalendar',{listadoRegistros:forms})
+       socket.emit('apiCalendar',{listadoRegistros:newForms})
        socket.emit('apiCalendar',{alertDeleteEventsOk:true})
       // enviar Alertas y formularios
        for (const email of emailsUnicos){
         const formsByEmail = getFormsByEmail(email);
-        io.emit(email, formsByEmail); // Enviar el evento al socket suscrito al evento con el nombre del email
+        io.emit(email, {dataForms:formsByEmail}); // Enviar el evento al socket suscrito al evento con el nombre del email
  
        }
   }else{
