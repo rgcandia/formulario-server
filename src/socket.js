@@ -136,17 +136,31 @@ socket.on('eliminarEventos',async (id)=>{
     const calendarios =  await listarCalendarios();
     const calendario = calendarios.find(e=>e.id===id).summary;
     const nombreCalendario = calendario==="Campo de Deporte"?"CampoDeporte":calendario;
-    
+    // Crear un conjunto para almacenar correos electrónicos únicos
+    const emailsSet = new Set();
+
             // Filtrar y eliminar los formularios que coinciden con el lugar del calendario
             const formsAEliminar = forms.filter(form => form.data.home.lugar === nombreCalendario);
 
             for (const form of formsAEliminar) {
+                emailsSet.add(form.email);
                 deleteForm(form.id);
             }
 
             console.log(`Se eliminaron ${formsAEliminar.length} formularios del lugar "${nombreCalendario}".`);
-        
-
+            
+      // Convertir el conjunto a un array
+      const emailsUnicos = Array.from(emailsSet);
+     
+       const newForms = await getForms();
+       socket.emit('apiCalendar',{listadoRegistros:forms})
+       socket.emit('apiCalendar',{alertDeleteEventsOk:true})
+      // enviar Alertas y formularios
+       for (const email of emailsUnicos){
+        const formsByEmail = getFormsByEmail(email);
+        io.emit(email, formsByEmail); // Enviar el evento al socket suscrito al evento con el nombre del email
+ 
+       }
   }else{
 console.log("no se pudo eliminar por alguna razón")
   }
