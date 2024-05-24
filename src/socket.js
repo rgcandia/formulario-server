@@ -21,7 +21,9 @@ const {
   compartirCalendario,
   eliminarCalendario,
   obtenerEventosCalendario,
-  crearTurno
+  crearTurno,
+  eliminarTodosLosEventos
+  
 } = require('./api_google/api.js');
 
 // Función para inicializar el SOCKET con el httpServer pasado por parámetro.
