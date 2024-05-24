@@ -124,6 +124,11 @@ function initialSocket(httpServer) {
   }
 });
 
+// listener de evento para eliminar todos los eventos de un calendario
+socket.on('eliminarEventos',async (id)=>{
+  console.log(id)
+});
+
 // evento para confirmar el evento
 socket.on('confirmEvent', async (form) => {
   try {
