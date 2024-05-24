@@ -126,7 +126,13 @@ function initialSocket(httpServer) {
 
 // listener de evento para eliminar todos los eventos de un calendario
 socket.on('eliminarEventos',async (id)=>{
-  console.log(id)
+  const seElimino = await eliminarTodosLosEventos(id);
+  if(seElimino){
+console.log("se manda nuevamente los datos a donde correspondan")
+
+  }else{
+console.log("no se pudo eliminar por alguna razón")
+  }
 });
 
 // evento para confirmar el evento

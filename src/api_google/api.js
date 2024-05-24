@@ -182,44 +182,52 @@ async function crearTurno(idCalendario, nuevoTurno) {
   }
 }
 
-// // Ejemplo de uso de la función crearTurno
-// const idCalendario = 'tu-id-de-calendario';
-// const nuevoTurno = {
-//   summary: 'Consulta Médica',
-//   description: 'Consulta con el Dr. Perez', 
-//   start: {
-//     dateTime: '2024-06-01T09:00:00-07:00',
-//     timeZone: 'America/Los_Angeles',
-//   },
-//   end: {
-//     dateTime: '2024-06-01T10:00:00-07:00',
-//     timeZone: 'America/Los_Angeles',
-//   },
-//   attendees: [
-//     { email: 'paciente@example.com' },
-//   ],
-//   reminders: {
-//     useDefault: false,
-//     overrides: [
-//       { method: 'email', minutes: 24 * 60 },
-//       { method: 'popup', minutes: 10 },
-//     ],
-//   },
-// };
+// funcion para eliminar evento por id
+async function eliminarEvento(idCalendario, idEvento) {
+  try {
+      await calendar.events.delete({
+          calendarId: idCalendario,
+          eventId: idEvento,
+      });
+      console.log(`Evento con ID ${idEvento} eliminado del calendario con ID ${idCalendario}.`);
+      return true;
+  } catch (error) {
+      console.error(`Error al eliminar el evento con ID ${idEvento} del calendario con ID ${idCalendario}:`, error.message);
+      return false;
+  }
+}
+// funcion para eliminar todos los eventos
+async function eliminarTodosLosEventos(idCalendario) {
+  try {
+      // Obtener todos los eventos del calendario
+      const eventos = await obtenerEventosCalendario(idCalendario);
 
-// crearTurno(idCalendario, nuevoTurno).then((turnoCreado) => {
-//   if (turnoCreado) {
-//     console.log('Turno creado:', turnoCreado);
-//   } else {
-//     console.log('Error al crear el turno.');
-//   }
-// });
+      // Verificar si se encontraron eventos
+      if (!eventos) {
+          console.log(`No se encontraron eventos en el calendario con ID ${idCalendario}.`);
+          return false;
+      }
+
+      // Iterar sobre cada evento y eliminarlo
+      for (const evento of eventos) {
+          await eliminarEvento(idCalendario, evento.id);
+      }
+
+      console.log(`Todos los eventos del calendario con ID ${idCalendario} fueron eliminados con éxito.`);
+      return true;
+  } catch (error) {
+      console.error('Error al eliminar todos los eventos del calendario:', error.message);
+      return false;
+  }
+}
+
   module.exports = {
     listarCalendarios,
     crearCalendario,
     compartirCalendario,
     eliminarCalendario,
     obtenerEventosCalendario,
-    crearTurno
+    crearTurno,
+    eliminarTodosLosEventos
     
   }
