@@ -7,7 +7,8 @@ const {
   updateForm,
   createUser,
   getForms,
-  formatoNuevoTurno
+  formatoNuevoTurno,
+  confirmarEstadoForm
 } = require('./services.js')
 
 // const {authorize,listCalendars} = require('./apiCalendar.js');
@@ -128,17 +129,38 @@ socket.on('confirmEvent', async (form) => {
   try {
     // Obtenemos la lista de calendarios
     const calendarios = await listarCalendarios();
-    
-    // Buscamos el calendario con el summary que coincida con form.data.lugar
-    const idCalendario = calendarios.find((el) => el.summary === form.data.home.lugar).id;
+    // en caso de el lugar ser CampoDeporte se cambia
+    const lugar = form.data.home.lugar==="CampoDeporte"?"Campo de Deporte":form.data.home.lugar;
+    // Buscamos el calendario con el summary que coincida con form.data.home.lugar
+    const idCalendario = calendarios.find((el) => el.summary === lugar).id;
     const  nuevoEvento = formatoNuevoTurno(form);
-
+    
     if (idCalendario) {
      const data = await crearTurno(idCalendario,nuevoEvento);
+      if(data){
+        // se tiene que cambiar a confirmado el estado del evento
+        const estado = await confirmarEstadoForm(form.id);
+        const forms = await getFormsByEmail(form.email);
+        const allForms = await getForms();
+        // Se debe enviar las confirmaciones de que se realizo correctamente
+
+        if(estado){
+          // confirmado
+          socket.emit(form.email,{dataForms:forms});
+          socket.emit('apiCalendar',{listadoRegistros:forms});
+          socket.emit(form.email,{alertConfirmEvent:true});
+        }else{
+          // error al cambiar estado
+        }
+
       
+      }else{
+        // se debe mandar el error ocurrido
+      }
+
 
     } else {
-      console.error("No se encontró un calendario con el lugar especificado:", form.data.lugar);
+      console.error("No se encontró un calendario con el lugar especificado:", form.data.home.lugar);
     }
   } catch (error) {
     console.error("Error al listar los calendarios:", error);

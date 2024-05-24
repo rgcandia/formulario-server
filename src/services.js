@@ -872,10 +872,38 @@ const formatMail = (form,obj,texto)=>{
 
 
 }
+ 
+// Funcion para cambiar el estado del formulario
+async function confirmarEstadoForm(id) {
+  try {
+    // Buscar el registro por su ID
+    const form = await Form.findByPk(id);
+
+    if (!form) {
+      console.log(`No se encontró un formulario con el id ${id}`);
+      return false;
+    }
+
+    // Actualizar la propiedad 'estado' a 'CONFIRMADO'
+    form.estado = 'CONFIRMADO';
+
+    // Guardar los cambios
+    await form.save();
+
+    console.log(`El estado del formulario con id ${id} ha sido actualizado a CONFIRMADO`);
+    return true;
+  } catch (error) {
+    console.error('Error al actualizar el estado del formulario:', error);
+    return false;
+  }
+}
+
+
 
   // exports
 
   module.exports = {
+    confirmarEstadoForm,
     formatoNuevoTurno,
     getForms,
     getUser,
