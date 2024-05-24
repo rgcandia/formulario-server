@@ -108,7 +108,7 @@ function initialSocket(httpServer) {
       // recibo la petición para ver el calendario dependiendo del id
       // Se debe obtener los evento del calendario correspondiente
       const eventos = await obtenerEventosCalendario(id);
-      console.log(eventos)
+      
       socket.emit('apiCalendar',{listadoEventos:{
         data:eventos
       }})
