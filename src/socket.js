@@ -214,8 +214,7 @@ socket.on('confirmEvent', async (form) => {
 // evento para obtener los formularios del calendario seleccionado, ya sea  pendiente o confirmado
 socket.on('getFormsCalendarioSeleccionado', async (lugar)=>{
   const forms = await obtenerFormulariosPorLugarYEstado(lugar);
-  console.log(lugar)
-  console.log(forms)
+  socket.emit('getFormsCalendarioSeleccionado',forms);
 });
 
     });
