@@ -28,8 +28,13 @@ const { Form , User} = require('./db.js');
 function combineDateAndTime(dateString, timeString) {
   const [year, month, day] = dateString.split('-').map(Number);
   const [hours, minutes] = timeString.split(':').map(Number);
-  return new Date(year, month - 1, day, hours, minutes);
+
+  // Crear una fecha en UTC para evitar problemas de zona horaria
+  const date = new Date(Date.UTC(year, month - 1, day, hours, minutes));
+
+  return date;
 }
+
 
 //Crea formulario  pendiente
 const createForm = async (user,data) => {
@@ -47,6 +52,7 @@ const createForm = async (user,data) => {
   return form;
   
 };
+
 
 const formatoNuevoTurno = (form)=>{
   const nuevoTurno = {
