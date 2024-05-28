@@ -8,7 +8,8 @@ const {
   createUser,
   getForms,
   formatoNuevoTurno,
-  confirmarEstadoForm
+  confirmarEstadoForm,
+  obtenerFormulariosPorLugarYEstado
 } = require('./services.js')
 
 // const {authorize,listCalendars} = require('./apiCalendar.js');
@@ -210,7 +211,12 @@ socket.on('confirmEvent', async (form) => {
   }
 });
 
-
+// evento para obtener los formularios del calendario seleccionado, ya sea  pendiente o confirmado
+socket.on('getFormsCalendarioSeleccionado', async (lugar)=>{
+  const forms = await obtenerFormulariosPorLugarYEstado(lugar);
+  console.log(lugar)
+  console.log(forms)
+});
 
     });
 

@@ -68,21 +68,6 @@ const formatoNuevoTurno = (form)=>{
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //  devolver Forms
 async function getFormsByEmail(email) {
     try {
@@ -177,6 +162,34 @@ const createUser = async (email,name) => {
   return form;
   
 };
+
+//  obtengo los formularios dependiendo del lugar y el estado
+
+
+async function obtenerFormulariosPorLugarYEstado(lugar) {
+  const estados = ['PENDIENTE', 'CONFIRMADO'];
+    try {
+        // Obtener todos los formularios que coinciden con el lugar proporcionado
+        const formulariosPorLugar = await Form.findAll({
+            where: {
+                'data.home.lugar': lugar
+            }
+        });
+
+        // Filtrar los formularios por estado
+        const formulariosFiltrados = formulariosPorLugar.filter(formulario => {
+            return estados.includes(formulario.estado);
+        });
+
+        return formulariosFiltrados;
+    } catch (error) {
+        console.error('Error al obtener los formularios:', error);
+        throw error;
+    }
+}
+
+
+
 
 
 
@@ -903,6 +916,7 @@ async function confirmarEstadoForm(id) {
   // exports
 
   module.exports = {
+    obtenerFormulariosPorLugarYEstado,
     confirmarEstadoForm,
     formatoNuevoTurno,
     getForms,
