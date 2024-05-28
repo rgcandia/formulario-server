@@ -69,7 +69,7 @@ function initialSocket(httpServer) {
     // Evento creación de formulario
 
     socket.on('createForm',async ({user,data})=>{
-      console.log(data)
+     
        // realizar comprobaciones    
        // creo formulario y lo dejo pendiente si cumplió con los requisitos
        const form = await createForm(user,data);
