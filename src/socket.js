@@ -218,6 +218,31 @@ socket.on('getFormsCalendarioSeleccionado', async (lugar)=>{
   socket.emit('apiCalendar',{formsCalendarioSeleccionado:forms});
 });
 
+ // evento para crear usuario
+ socket.on('createUser', async (data) => {
+  try {
+    // Verifica si el usuario ya existe en la base de datos
+    let user = await getUser(data.email);
+
+    if (!user) {
+      // Si el usuario no existe, crea uno nuevo
+      user = await createUser(data.email, data.name);
+      console.log('Usuario creado:', user);
+    } else {
+      console.log('El usuario ya existe:', user);
+    }
+
+    // Envía una respuesta al cliente si es necesario
+    socket.emit('Alerts', { alertUserCreated:true});
+
+  } catch (error) {
+    console.error('Error al crear el usuario:', error);
+
+    // Envía una respuesta al cliente si es necesario
+    socket.emit('Alerts', { alertUserNotCreated:true });
+  }
+});
+
     });
 
     return io;

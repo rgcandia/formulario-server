@@ -20,7 +20,7 @@ const { Form , User} = require('./db.js');
     return user;
   } catch (error) {
     console.error('Error al buscar el usuario', error);
-    
+    return false;
   }
  } 
 
