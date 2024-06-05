@@ -26,7 +26,7 @@ const {
   eliminarTodosLosEventos
   
 } = require('./api_google/api.js');
-
+const admin = require('./firebase/admin.js');
 // Función para inicializar el SOCKET con el httpServer pasado por parámetro.
 function initialSocket(httpServer) {
     io = new Server(httpServer, {
@@ -46,20 +46,40 @@ function initialSocket(httpServer) {
 
          // Pongo a escuchar evento "join" para obtener los formularios por email
      socket.on('join', async (email) => {
-      // inicia sesion un usuario
+      try {
+            // inicia sesion un usuario
       // obtener datos del usuario
-        const user = await getUser(email);
+        const user = await admin.auth().getUserByEmail(email);
         // obtener los formularios del usuario
         const forms = await getFormsByEmail(email);
       // obtener la lista de calendarios
         const listaCalendarios = await listarCalendarios()
     
     // mandar los datos a eventos de socket
-  
-        user.length===0?console.log("no hay usuario"): socket.emit(email,{dataUser:user[0].dataValues})
+       if( user.email){
+        if(user.email==="admin@wellspring.edu.ar"){
+           socket.emit(email,{dataUser:{name:"Admin",email:user.email}})
+             
         socket.emit(email,{dataForms:forms})
           // se emite un evento con la informacion de los calendarios
         socket.emit("apiCalendar",{calendarios:listaCalendarios})
+        }else{
+          socket.emit(email,{dataUser:{name:user.displayName,email:user.email}})
+            
+        socket.emit(email,{dataForms:forms})
+          // se emite un evento con la informacion de los calendarios
+        socket.emit("apiCalendar",{calendarios:listaCalendarios})
+        }
+        
+
+       }else{
+        console.log("no hay usuario")
+       }
+       
+      } catch (error) {
+        
+      }
+  
 
     });
 
@@ -221,27 +241,30 @@ socket.on('getFormsCalendarioSeleccionado', async (lugar)=>{
  // evento para crear usuario
  socket.on('createUser', async (data) => {
   try {
-    // Verifica si el usuario ya existe en la base de datos
-    let user = await getUser(data.email);
-
-    if (!user) {
-      // Si el usuario no existe, crea uno nuevo
-      user = await createUser(data.email, data.name);
-      console.log('Usuario creado:', user);
-    } else {
-      console.log('El usuario ya existe:', user);
-    }
-
-    // Envía una respuesta al cliente si es necesario
-    socket.emit('Alerts', { alertUserCreated:true});
-
+   
+  
+      const createdUser = await admin.auth().createUser({
+        email: data.email,
+        password: data.password,
+        displayName: data.name,
+        // Puedes agregar más campos aquí según sea necesario
+      });
+      console.log('Usuario creado:', createdUser.uid);
+      // Envía una respuesta al cliente si es necesario
+      socket.emit('Alerts', { alertUserCreated: true });
+ //
+     
+    
   } catch (error) {
+    socket.emit('Alerts', { alertUserNotCreated: error });
     console.error('Error al crear el usuario:', error);
-
     // Envía una respuesta al cliente si es necesario
-    socket.emit('Alerts', { alertUserNotCreated:true });
+   
   }
 });
+
+
+
 
     });
 
