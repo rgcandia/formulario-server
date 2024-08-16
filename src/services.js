@@ -55,6 +55,8 @@ const createForm = async (user,data) => {
 
 
 const formatoNuevoTurno = (form)=>{
+  console.log(form.horaInicio)
+  console.log(form.horaFinal)
   const nuevoTurno = {
     summary: form.nameEvento,
     location: form.sector,
