@@ -276,8 +276,8 @@ const respuesta =  await getFormByID(data);
   
    if(respuesta.data.estado ==='PENDIENTE'){
     const respusta = await cancelarEvento(data);
-    // enviar confirmación de que se realizóo correctamente la operación evento
-    socket.emit();
+    // enviar confirmación de que se realizó correctamente la operación evento
+    socket.emit('apiCalendar',{alertCancelEvent:true});
    }
 
 
