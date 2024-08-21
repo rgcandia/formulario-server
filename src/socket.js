@@ -4,9 +4,11 @@ const {
   getFormsByEmail,
   createForm,
   deleteForm,
+  cancelarEvento,
   updateForm,
   createUser,
   getForms,
+  getFormByID,
   formatoNuevoTurno,
   confirmarEstadoForm,
   obtenerFormulariosPorLugarYEstado
@@ -263,6 +265,25 @@ socket.on('getFormsCalendarioSeleccionado', async (lugar)=>{
   }
 });
 
+
+// Evento  para rechazar o cancelar
+socket.on('eliminarEvento', async (data)=>{
+// verificar si el evento está confirmado, rechazado o cancelado
+//para cada caso se debe realizar una acción correspondiente.
+ 
+const respuesta =  await getFormByID(data);
+ if(respuesta.status==='success'){
+  
+   if(respuesta.data.estado ==='PENDIENTE'){
+    const respusta = await cancelarEvento(data);
+    // enviar confirmación de que se realizóo correctamente la operación evento
+    socket.emit();
+   }
+
+
+ }
+
+});
 
 
 

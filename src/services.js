@@ -55,8 +55,6 @@ const createForm = async (user,data) => {
 
 
 const formatoNuevoTurno = (form)=>{
-  console.log(form.horaInicio)
-  console.log(form.horaFinal)
   const nuevoTurno = {
     summary: form.nameEvento,
     location: form.sector,
@@ -76,7 +74,28 @@ const formatoNuevoTurno = (form)=>{
 
 }
 
-//  devolver Forms
+
+//  funcion para devolver el formulario seleccionado
+async function getFormByID(id) {
+  try {
+    // Buscar el formulario por ID
+    const form = await Form.findByPk(id);
+
+    if (!form) {
+      // Si no se encuentra el formulario
+      return { status: 'error', message: 'Formulario no encontrado' };
+    }
+
+    // Si el formulario se encuentra
+    return { status: 'success', data: form };
+  } catch (e) {
+    // Manejo de errores
+    console.error('Error al obtener el formulario:', e);
+    return { status: 'error', message: 'Error en la consulta de la base de datos' };
+  }
+}
+
+//  devolver Forms del email correspondiente
 async function getFormsByEmail(email) {
     try {
       const forms = await Form.findAll({
@@ -113,6 +132,7 @@ async function getForms() {
     
   }
  }
+
 
 // Elimina un formulario pendiente
 const deleteForm =  async (id)=>{
@@ -918,7 +938,30 @@ async function confirmarEstadoForm(id) {
     return false;
   }
 }
+// funcion para  poner cancelado el estado
+async function cancelarEvento (id){
+  try {
+     // Buscar el registro por su ID
+     const form = await Form.findByPk(id);
 
+     if (!form) {
+       console.log(`No se encontró un formulario con el id ${id}`);
+       return false;
+     }
+ 
+     // Actualizar la propiedad 'estado' a 'CONFIRMADO'
+     form.estado = 'CANCELADO';
+ 
+     // Guardar los cambios
+     await form.save();
+ 
+     console.log(`El estado del formulario con id ${id} ha sido actualizado a CONFIRMADO`);
+     return true;
+  } catch (error) {
+    console.error('Error al actualizar el estado del formulario:', error);
+    return false;
+  }
+}
 
 
   // exports
@@ -926,8 +969,10 @@ async function confirmarEstadoForm(id) {
   module.exports = {
     obtenerFormulariosPorLugarYEstado,
     confirmarEstadoForm,
+    cancelarEvento,
     formatoNuevoTurno,
     getForms,
+    getFormByID,
     getUser,
     getFormsByEmail,
     createForm,
