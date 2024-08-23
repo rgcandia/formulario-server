@@ -214,7 +214,7 @@ socket.on('confirmEvent', async (form) => {
         if(estado){
           // confirmado
           socket.emit(form.email,{dataForms:forms});
-          socket.emit('apiCalendar',{listadoRegistros:forms});
+          socket.emit('apiCalendar',{listadoRegistros:allForms});
           socket.emit(form.email,{alertConfirmEvent:true});
         }else{
           // error al cambiar estado
@@ -272,12 +272,19 @@ socket.on('eliminarEvento', async (data)=>{
 //para cada caso se debe realizar una acción correspondiente.
  
 const respuesta =  await getFormByID(data);
+
  if(respuesta.status==='success'){
   
    if(respuesta.data.estado ==='PENDIENTE'){
     const respusta = await cancelarEvento(data);
+  
+    
+    const forms = await getFormsByEmail(respuesta.data.email);
+    const allForms = await getForms();
     // enviar confirmación de que se realizó correctamente la operación evento
     socket.emit('apiCalendar',{alertCancelEvent:true});
+    io.emit(respuesta.data.email,{dataForms:forms});
+    io.emit('apiCalendar',{listadoRegistros:allForms});
    }
 
 
