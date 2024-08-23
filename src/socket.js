@@ -286,6 +286,12 @@ const respuesta =  await getFormByID(data);
     io.emit(respuesta.data.email,{dataForms:forms});
     io.emit('apiCalendar',{listadoRegistros:allForms});
    }
+   if(respuesta.data.estado==='CONFIRMADO'){
+    // se debe eliminar no sólo de la base de datos sino tambien del calendar de google
+   }
+   if(respuesta.data.estado==='CANCELADO'){
+    socket.emit('Alerts',{CancelledEventAlert:'El evento ya fue cancelado.'});
+   }
 
 
  }
