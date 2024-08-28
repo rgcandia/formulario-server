@@ -294,7 +294,20 @@ const respuesta =  await getFormByID(data);
     const idCalendario = calendarios.find(e=> e.summary===lugar).id;
    // Obtener eventos del calendario seleccionado
    const eventosCalendario = await obtenerEventosCalendario(idCalendario);
-   console.log(eventosCalendario);
+ 
+   // Buscar entre lo eventos del calendario correspondiente el evento que coincida con el horario
+   const fechaHoraEventoBuscado = respuesta.data.fecha.toISOString().slice(0, -5) + 'Z';
+    //Eliminar milisegundos de la fecha 
+    console.log(fechaHoraEventoBuscado)
+ 
+   const evetoEncontrado =  eventosCalendario.find((e)=>{
+	  
+	   return  e.start.dateTime === fechaHoraEventoBuscado;
+	   
+	   });
+   console.log("se contró evento:");
+   console.log(evetoEncontrado);
+   
    }
    if(respuesta.data.estado==='CANCELADO'){
     socket.emit('Alerts',{CancelledEventAlert:'El evento ya fue cancelado.'});
