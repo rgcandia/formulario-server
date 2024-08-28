@@ -230,6 +230,6 @@ async function eliminarTodosLosEventos(idCalendario) {
     eliminarCalendario,
     obtenerEventosCalendario,
     crearTurno,
-    eliminarTodosLosEventos
-    
+    eliminarTodosLosEventos,
+    eliminarEvento
   }

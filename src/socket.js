@@ -25,7 +25,9 @@ const {
   eliminarCalendario,
   obtenerEventosCalendario,
   crearTurno,
-  eliminarTodosLosEventos
+  eliminarTodosLosEventos,
+  eliminarEvento
+  
   
 } = require('./api_google/api.js');
 const admin = require('./firebase/admin.js');
@@ -294,19 +296,32 @@ const respuesta =  await getFormByID(data);
     const idCalendario = calendarios.find(e=> e.summary===lugar).id;
    // Obtener eventos del calendario seleccionado
    const eventosCalendario = await obtenerEventosCalendario(idCalendario);
- 
-   // Buscar entre lo eventos del calendario correspondiente el evento que coincida con el horario
+   //Eliminar milisegundos de la fecha 
+   
    const fechaHoraEventoBuscado = respuesta.data.fecha.toISOString().slice(0, -5) + 'Z';
-    //Eliminar milisegundos de la fecha 
-    console.log(fechaHoraEventoBuscado)
- 
+  
+   
+ // Buscar entre lo eventos del calendario correspondiente el evento que coincida con el horario
    const evetoEncontrado =  eventosCalendario.find((e)=>{
 	  
 	   return  e.start.dateTime === fechaHoraEventoBuscado;
 	   
 	   });
-   console.log("se contró evento:");
-   console.log(evetoEncontrado);
+   
+   // Eliminar evento del calendario
+   const eventoEliminado = await eliminarEvento(idCalendario,evetoEncontrado.id);
+   //Cancelar Evento
+   if(eventoEliminado){
+	   const eventoCancelado = await cancelarEvento(data);
+	    if(eventoCancelado){
+   const forms = await getFormsByEmail(respuesta.data.email);
+    const allForms = await getForms();
+    // enviar confirmación de que se realizó correctamente la operación evento
+    socket.emit('apiCalendar',{alertCancelEvent:true});
+    io.emit(respuesta.data.email,{dataForms:forms});
+    io.emit('apiCalendar',{listadoRegistros:allForms});
+			}
+	   }
    
    }
    if(respuesta.data.estado==='CANCELADO'){
